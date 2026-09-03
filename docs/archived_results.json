@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "units": {
+    "waymo": "percent",
+    "nuscenes": "percent",
+    "argoverse2": "fraction"
+  },
+  "results": {
+    "waymo": {
+      "dataset": "Waymo Open Dataset",
+      "split": "validation",
+      "samples": 39987,
+      "checkpoint_epoch": 12,
+      "checkpoint_sha256": "f67a27ef0def225f1ce8b1348daf92b5e696b410170a0a7535e91def4d6277fc",
+      "evaluation": "native official Waymo evaluation",
+      "metrics": {
+        "L1_mAP": 82.7917,
+        "L1_mAPH": 80.5876,
+        "L2_mAP": 76.80126666666668,
+        "L2_mAPH": 74.65413333333333
+      },
+      "protocol_notes": [
+        "The archived model uses a 64x1024 range-view feature map.",
+        "Historical training used four GPUs with global batch size 8.",
+        "The fixed-seed evaluation protocol uses seed 666."
+      ]
+    },
+    "nuscenes": {
+      "dataset": "nuScenes v1.0-trainval",
+      "split": "validation",
+      "samples": 6019,
+      "checkpoint_epoch": 24,
+      "checkpoint_sha256": "66132058b6e739f1a9654829998a611628d74bfcbbd110616431a14a613a10bd",
+      "evaluation": "official nuScenes evaluation, paired-seed-v2",
+      "metrics": {
+        "NDS": 71.05516046773805,
+        "mAP": 67.41847350464639,
+        "mATE": 0.26793861072900244,
+        "mASE": 0.2511057710489712,
+        "mAOE": 0.2680115701580649,
+        "mAVE": 0.28996404472493437,
+        "mAAE": 0.18838763179754142
+      },
+      "protocol_notes": [
+        "Four evaluation ranks and global batch size 8 were used.",
+        "Each rank used seed 666 plus its global rank.",
+        "The released nuScenes primary uses TransFusionHead."
+      ]
+    },
+    "argoverse2": {
+      "dataset": "Argoverse 2 Sensor Dataset",
+      "split": "validation",
+      "samples": 23547,
+      "checkpoint_epoch": 12,
+      "checkpoint_sha256": "4252c4b21a9e6f23c52aaa6951b5a6d23a140c8b23433716627b0864ba47aabb",
+      "evaluation": "official AV2 implementation with the paper's 200 m ROI-only protocol",
+      "metrics": {
+        "mAP": 0.38,
+        "CDS": 0.295,
+        "mATE": 0.429,
+        "mASE": 0.325,
+        "mAOE": 0.705
+      },
+      "distance_annuli": {
+        "[0,50)": {"mAP": 0.525, "CDS": 0.422},
+        "[50,100)": {"mAP": 0.255, "CDS": 0.19},
+        "[100,150)": {"mAP": 0.107, "CDS": 0.074},
+        "[150,200]": {"mAP": 0.036, "CDS": 0.024}
+      },
+      "protocol_notes": [
+        "The 200 m ROI-only setting is a paper protocol, not the default 150 m AV2 leaderboard setting.",
+        "Distance-annulus values use the official formula on independently filtered annuli.",
+        "Training used seed 666, global batch size 16, FP32, and RV_VOX_CHUNK=512."
+      ]
+    }
+  },
+  "reporting_policy": {
+    "checkpoint_files_included": false,
+    "datasets_included": false,
+    "synthetic_projection_included": false,
+    "note": "Only archived measured results are recorded here; paper-constrained synthetic projections are intentionally excluded."
+  }
+}

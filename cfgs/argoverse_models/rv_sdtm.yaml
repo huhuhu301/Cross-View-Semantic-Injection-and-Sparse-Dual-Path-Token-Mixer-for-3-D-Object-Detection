@@ -1,0 +1,65 @@
+# Modified by RV-SDTM contributors for this public release; see NOTICE.
+# Repository-root wrapper for the canonical tools/cfgs RV-SDTM config.
+_BASE_CONFIG_: tools/cfgs/argoverse_models/rv_sdtm.yaml
+
+DATA_CONFIG:
+    _BASE_CONFIG_: cfgs/dataset_configs/argo2_dataset.yaml
+    DATA_PATH: data/argo2
+    SAMPLED_INTERVAL: {'train': 1, 'test': 1}
+    POINT_CLOUD_RANGE: [-200, -200, -4, 200, 200, 4]
+    # Paper protocol; AV2 leaderboard submissions commonly use 150 m.
+    EVALUATE_RANGE: 200.0
+    EVAL_ONLY_ROI_INSTANCES: True
+
+    DATA_AUGMENTOR:
+        DISABLE_AUG_LIST: ['placeholder']
+        AUG_CONFIG_LIST:
+            - NAME: gt_sampling
+              DB_INFO_PATH: [argo2_dbinfos.pkl]
+              USE_SHARED_MEMORY: False
+              DB_DATA_PATH: [argo2_dbinfos_global.npy]
+              PREPARE:
+                  filter_by_min_points: [
+                      'Regular_vehicle:5', 'Pedestrian:5', 'Bicyclist:5',
+                      'Motorcyclist:5', 'Wheeled_rider:5', 'Bollard:5',
+                      'Construction_cone:5', 'Sign:5',
+                      'Construction_barrel:5', 'Stop_sign:5',
+                      'Mobile_pedestrian_crossing_sign:5',
+                      'Large_vehicle:5', 'Bus:5', 'Box_truck:5', 'Truck:5',
+                      'Vehicular_trailer:5', 'Truck_cab:5', 'School_bus:5',
+                      'Articulated_bus:5', 'Message_board_trailer:5',
+                      'Bicycle:5', 'Motorcycle:5', 'Wheeled_device:5',
+                      'Wheelchair:5', 'Stroller:5', 'Dog:5'
+                  ]
+              SAMPLE_GROUPS: [
+                  'Regular_vehicle:1', 'Pedestrian:2', 'Bicyclist:2',
+                  'Motorcyclist:2', 'Wheeled_rider:2', 'Bollard:2',
+                  'Construction_cone:2', 'Sign:2',
+                  'Construction_barrel:2', 'Stop_sign:2',
+                  'Mobile_pedestrian_crossing_sign:1',
+                  'Large_vehicle:1', 'Bus:1', 'Box_truck:1', 'Truck:1',
+                  'Vehicular_trailer:1', 'Truck_cab:1', 'School_bus:1',
+                  'Articulated_bus:1', 'Message_board_trailer:2',
+                  'Bicycle:2', 'Motorcycle:2', 'Wheeled_device:2',
+                  'Wheelchair:2', 'Stroller:2', 'Dog:2'
+              ]
+              NUM_POINT_FEATURES: 4
+              DATABASE_WITH_FAKELIDAR: False
+              REMOVE_EXTRA_WIDTH: [0.0, 0.0, 0.0]
+              LIMIT_WHOLE_SCENE: True
+            - NAME: random_world_flip
+              ALONG_AXIS_LIST: ['x', 'y']
+            - NAME: random_world_rotation
+              WORLD_ROT_ANGLE: [-0.78539816, 0.78539816]
+            - NAME: random_world_scaling
+              WORLD_SCALE_RANGE: [0.95, 1.05]
+            - NAME: random_world_translation
+              NOISE_TRANSLATE_STD: [0.5, 0.5, 0.5]
+
+    DATA_PROCESSOR:
+        - NAME: mask_points_and_boxes_outside_range
+          REMOVE_OUTSIDE_BOXES: True
+        - NAME: shuffle_points
+          SHUFFLE_ENABLED: {'train': True, 'test': False}
+        - NAME: transform_points_to_voxels_placeholder
+          VOXEL_SIZE: [0.1, 0.1, 0.2]

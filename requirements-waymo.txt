@@ -1,0 +1,3 @@
+# Modified by RV-SDTM contributors for this public release; see NOTICE.
+# Waymo data conversion and the official Python metrics implementation.
+waymo-open-dataset-tf-2-11-0==1.5.0

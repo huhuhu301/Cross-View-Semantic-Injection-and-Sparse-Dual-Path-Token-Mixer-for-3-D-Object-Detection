@@ -1,0 +1,51 @@
+# Modified by RV-SDTM contributors for this public release; see NOTICE.
+# Repository-root wrapper for the canonical tools/cfgs RV-SDTM config.
+_BASE_CONFIG_: tools/cfgs/waymo_models/rv_sdtm.yaml
+
+DATA_CONFIG:
+    _BASE_CONFIG_: cfgs/dataset_configs/waymo_dataset.yaml
+    DATA_PATH: data/waymo
+    SAMPLED_INTERVAL: {'train': 2, 'test': 1}
+    POINT_CLOUD_RANGE: [-76.8, -76.8, -2, 76.8, 76.8, 4.0]
+    POINTS_TANH_DIM: [3, 4]
+
+    DATA_AUGMENTOR:
+        DISABLE_AUG_LIST: ['placeholder']
+        AUG_CONFIG_LIST:
+            - NAME: gt_sampling
+              USE_ROAD_PLANE: False
+              DB_INFO_PATH:
+                  - waymo_processed_data_v0_5_0_waymo_dbinfos_train_sampled_1.pkl
+              # Portable default; set True only after generating the global NPY.
+              USE_SHARED_MEMORY: False
+              DB_DATA_PATH:
+                  - waymo_processed_data_v0_5_0_gt_database_train_sampled_1_global.npy
+              BACKUP_DB_INFO:
+                  DB_INFO_PATH: waymo_processed_data_v0_5_0_waymo_dbinfos_train_sampled_1_multiframe_-4_to_0.pkl
+                  DB_DATA_PATH: waymo_processed_data_v0_5_0_gt_database_train_sampled_1_multiframe_-4_to_0_global.npy
+                  NUM_POINT_FEATURES: 6
+              PREPARE:
+                  filter_by_min_points: [
+                      'Vehicle:5', 'Pedestrian:10', 'Cyclist:10'
+                  ]
+                  filter_by_difficulty: [-1]
+              SAMPLE_GROUPS: ['Vehicle:15', 'Pedestrian:10', 'Cyclist:10']
+              NUM_POINT_FEATURES: 5
+              REMOVE_EXTRA_WIDTH: [0.0, 0.0, 0.0]
+              LIMIT_WHOLE_SCENE: True
+            - NAME: random_world_flip
+              ALONG_AXIS_LIST: ['x', 'y']
+            - NAME: random_world_rotation
+              WORLD_ROT_ANGLE: [-0.78539816, 0.78539816]
+            - NAME: random_world_scaling
+              WORLD_SCALE_RANGE: [0.95, 1.05]
+            - NAME: random_world_translation
+              NOISE_TRANSLATE_STD: [0.5, 0.5, 0.5]
+
+    DATA_PROCESSOR:
+        - NAME: mask_points_and_boxes_outside_range
+          REMOVE_OUTSIDE_BOXES: True
+        - NAME: shuffle_points
+          SHUFFLE_ENABLED: {'train': True, 'test': True}
+        - NAME: transform_points_to_voxels_placeholder
+          VOXEL_SIZE: [0.32, 0.32, 0.1875]

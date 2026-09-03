@@ -1,0 +1,7 @@
+# Modified by RV-SDTM contributors for this public release; see NOTICE.
+# Supported all-dataset environment. PyTorch/torchvision are installed
+# separately because their wheels depend on the local CUDA runtime.
+-r requirements-core.txt
+-r requirements-waymo.txt
+-r requirements-nuscenes.txt
+-r requirements-av2.txt

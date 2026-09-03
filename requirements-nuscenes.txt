@@ -1,0 +1,2 @@
+# Modified by RV-SDTM contributors for this public release; see NOTICE.
+nuscenes-devkit==1.0.5

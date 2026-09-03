@@ -1,0 +1,19 @@
+RV-SDTM
+Copyright 2026 RV-SDTM contributors
+
+This product includes and modifies software from the OpenPCDet, FSHNet, and
+HEDNet projects. Those projects and their contributors retain their respective
+copyrights and attribution rights.
+
+Parts of the included KITTI evaluation implementation are provided under the
+MIT License; see pcdet/datasets/kitti/kitti_object_eval_python/LICENSE.
+
+The distributed-training initialization helper in pcdet/utils/common_utils.py
+is adapted from MMDetection/OpenMMLab and retains its source-level attribution.
+
+Source, configuration, and launcher files adapted for this snapshot carry a
+one-line RV-SDTM modification notice. That notice identifies release changes;
+it does not replace or claim ownership of upstream copyright.
+
+Additional provenance and dependency boundaries are recorded in
+THIRD_PARTY_NOTICES.md.
