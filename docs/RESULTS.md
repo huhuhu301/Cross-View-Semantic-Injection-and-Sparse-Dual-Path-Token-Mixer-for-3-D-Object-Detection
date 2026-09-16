@@ -1,4 +1,4 @@
-# Range–Voxel 3D Detection: validation results
+# RV-SDTM: validation results
 
 This page records the archived RV-SDTM checkpoint evaluations associated with
 this source release. Checkpoints and raw evaluation outputs are archived

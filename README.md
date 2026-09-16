@@ -1,4 +1,4 @@
-# Range–Voxel 3D Detection
+# Cross-View Semantic Injection and Sparse Dual-Path Token Mixer for 3-D Object Detection
 
 *RV-SDTM · LiDAR object detection on Waymo, nuScenes, and Argoverse 2.*
 
@@ -94,9 +94,8 @@ Use the paths above for commands launched from the repository root. The
 matching `tools/cfgs/` paths are used by distributed launchers executed inside
 `tools/`. Always pass the configuration explicitly.
 
-The repository uses a descriptive project name; the method name **RV-SDTM**,
-configuration filenames, and Python model identifiers remain consistent with
-the archived experiments.
+**RV-SDTM** is the method's short name, used in configuration filenames and
+Python model identifiers throughout this repository.
 
 ## 1. Environment setup
 
@@ -113,8 +112,8 @@ Clone the repository, create the environment, and compile the required CUDA
 extensions:
 
 ```bash
-git clone https://github.com/huhuhu301/Range-Voxel-3D-Detection.git
-cd Range-Voxel-3D-Detection
+git clone https://github.com/huhuhu301/Cross-View-Semantic-Injection-and-Sparse-Dual-Path-Token-Mixer-for-3-D-Object-Detection.git
+cd Cross-View-Semantic-Injection-and-Sparse-Dual-Path-Token-Mixer-for-3-D-Object-Detection
 
 conda create -n rv-sdtm python=3.8.20 -y
 conda activate rv-sdtm

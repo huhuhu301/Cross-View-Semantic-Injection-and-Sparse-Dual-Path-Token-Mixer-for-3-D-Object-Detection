@@ -1,4 +1,4 @@
-# Range–Voxel 3D Detection: qualitative examples
+# RV-SDTM: qualitative examples
 
 These author-provided Waymo figures illustrate RV-SDTM detections in two
 challenging settings: sparse returns at long range and partial occlusion.

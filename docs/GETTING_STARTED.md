@@ -1,6 +1,6 @@
 # Getting started
 
-Range–Voxel 3D Detection provides one RV-SDTM configuration for each supported
+This repository provides one RV-SDTM configuration for each supported
 dataset. This guide covers data preparation and the commands needed to train
 and evaluate a model. For checkpoint identities and compatibility details, see
 the [release guide](RV_SDTM_RELEASE.md).

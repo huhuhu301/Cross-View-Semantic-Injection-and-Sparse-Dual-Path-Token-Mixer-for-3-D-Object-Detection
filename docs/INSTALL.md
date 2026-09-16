@@ -1,7 +1,7 @@
 # Installation
 
-This guide covers the validated environment for Range–Voxel 3D Detection
-(RV-SDTM). Run installation commands from the cloned repository root.
+This guide covers the validated environment for RV-SDTM. Run installation
+commands from the cloned repository root.
 
 ## Recommended and validated stack
 

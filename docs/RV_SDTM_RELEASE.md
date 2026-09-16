@@ -1,9 +1,8 @@
-# Range–Voxel 3D Detection: release guide
+# RV-SDTM: release guide
 
-This document records the released RV-SDTM protocols, archived results, and
-checkpoint compatibility. The repository is named Range–Voxel 3D Detection;
-the RV-SDTM method name and code identifiers are retained to match the
-experiment records.
+This repository accompanies *Cross-View Semantic Injection and Sparse Dual-Path
+Token Mixer for 3-D Object Detection* (RV-SDTM). This guide records the released
+protocols, archived results, and checkpoint compatibility.
 
 ## 1. Supported protocols
 
