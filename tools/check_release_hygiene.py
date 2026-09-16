@@ -20,15 +20,52 @@ from pathlib import Path
 DEFAULT_MAX_FILE_MIB = 5
 READ_SAMPLE_BYTES = 8192
 
-# The only binary files in the release are two author-provided qualitative
-# result figures. Pinning their bytes keeps the binary-artifact rule intact.
-APPROVED_FIGURES = {
+# Only explicitly listed, byte-pinned qualitative media may be binary.
+# The five approved MP4s have a separate 25 MiB ceiling; other files retain
+# the default 5 MiB limit. Unknown videos and delivery archives still fail.
+APPROVED_MEDIA = {
     'docs/figures/waymo_long_range.png': (
         '355acab4cc0885e7a8bcd01f15fda6cc6d836229d2144179f7024b2b39f41aba',
         b'\x89PNG\r\n\x1a\n'),
     'docs/figures/waymo_occlusion.png': (
         'ad662463d24effc431a504e9eac32b8c534df5fccb5f7660e3d99ca24d058409',
         b'\x89PNG\r\n\x1a\n'),
+    'docs/showcase/assets/b_coverage.png': (
+        '7c7a2d77897f80d2f5aa36cab09e1e84ae1bc4e33af933ed4f30a806d4818195',
+        b'\x89PNG\r\n\x1a\n'),
+    'docs/showcase/assets/full_bev.mp4': (
+        '4b5b250d78495f22f5e48340bbb1c46934cec3c44dbd3d69d3c432c8de1895d8',
+        b'\x00\x00\x00 ftypisom'),
+    'docs/showcase/assets/full_bev.png': (
+        '700bf22c74d42015d69ec63d91cc7bccd19b53be95ca42676d8964fe4477adc0',
+        b'\x89PNG\r\n\x1a\n'),
+    'docs/showcase/assets/full_bev.gif': (
+        'c6be3b081eadb39e1418f28de4d4e8c365ded7749d15630cf8b66c42e60e76c6',
+        b'GIF89a'),
+    'docs/showcase/assets/01_cyclists.mp4': (
+        '5baa9b5a227c8d9c66cb533af33a1a8681e11557d7841e7987ff158febf6fbb7',
+        b'\x00\x00\x00 ftypisom'),
+    'docs/showcase/assets/01_cyclists.jpg': (
+        '9b5295244484ba18e65dcc4ba9324fa01544dd34c91475ac6f848c7af69cf64a',
+        b'\xff\xd8\xff'),
+    'docs/showcase/assets/02_pedestrians.mp4': (
+        '7cdd8fc09a93754c000202aed82a46a0a5929f73ccc73445732f5549d7cdbabb',
+        b'\x00\x00\x00 ftypisom'),
+    'docs/showcase/assets/02_pedestrians.jpg': (
+        '4d5aa1a933a3aa1719998c713b40a633e82da0ba4549aaefa73792f12bdc91b3',
+        b'\xff\xd8\xff'),
+    'docs/showcase/assets/03_far_vru.mp4': (
+        '04ff720d954181ec02079c051389148ed5a77220c9564f399c0c49d7b9f606d5',
+        b'\x00\x00\x00 ftypisom'),
+    'docs/showcase/assets/03_far_vru.jpg': (
+        '46747067561b6981efbde1c0e15c15b555f6e5900e57a572a3d861c05cca038c',
+        b'\xff\xd8\xff'),
+    'docs/showcase/assets/04_vehicles.mp4': (
+        'a540e27b686941d5260ccd60765ae5e065428f84a3c9f4404a327dc617d39213',
+        b'\x00\x00\x00 ftypisom'),
+    'docs/showcase/assets/04_vehicles.jpg': (
+        '50603891256275c06beaf3f3abfb43bfd2b870211ac11b33aa8df9d048ce9a4a',
+        b'\xff\xd8\xff'),
 }
 
 FORBIDDEN_SUFFIXES = {
@@ -169,6 +206,9 @@ def scan_file(root, relative_path, max_bytes):
     if not path.is_file():
         return ['{}: tracked path is not a regular file'.format(relative_path)]
 
+    approved_media = APPROVED_MEDIA.get(relative_path.as_posix())
+    if approved_media is not None and path.suffix.lower() == '.mp4':
+        max_bytes = 25 * 1024 ** 2
     size = path.stat().st_size
     if size > max_bytes:
         findings.append(
@@ -182,14 +222,13 @@ def scan_file(root, relative_path, max_bytes):
             '{}: forbidden generated/binary artifact'.format(relative_path))
 
     data = path.read_bytes()
-    approved_figure = APPROVED_FIGURES.get(relative_path.as_posix())
-    if approved_figure is not None:
-        expected_hash, signature = approved_figure
+    if approved_media is not None:
+        expected_hash, signature = approved_media
         if not data.startswith(signature):
-            findings.append('{}: invalid approved figure format'.format(
+            findings.append('{}: invalid approved media format'.format(
                 relative_path))
         if hashlib.sha256(data).hexdigest() != expected_hash:
-            findings.append('{}: approved figure hash mismatch'.format(
+            findings.append('{}: approved media hash mismatch'.format(
                 relative_path))
         return findings
     if b'\0' in data[:READ_SAMPLE_BYTES]:

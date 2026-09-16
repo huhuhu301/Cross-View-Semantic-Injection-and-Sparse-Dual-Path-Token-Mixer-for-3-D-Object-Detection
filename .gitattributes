@@ -1,0 +1,2 @@
+# Preserve the delivered diagnostic CSV byte-for-byte, including CRLF.
+docs/showcase/b_coverage_scores.csv -text whitespace=cr-at-eol

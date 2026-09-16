@@ -28,21 +28,45 @@ for **Waymo Open Dataset, nuScenes, and Argoverse 2 (AV2)**.
 
 ## Qualitative examples
 
-The Waymo examples below compare detections in sparse and partially occluded
-scenes. **Upper row:** comparison model. **Lower row:** RV-SDTM. Green boxes
-denote predictions, red boxes denote ground truth, and blue dashed outlines
-highlight selected objects. See the [figure notes](docs/SHOWCASE.md) for source
-and comparison details.
+Explore selected Waymo scenes, from vulnerable road users to dense traffic.
+The gallery combines a GT-coverage diagnostic with RV-SDTM prediction videos;
+their box colors have different meanings, as described below.
 
-### Long-range sparse returns
+### GT coverage in dense traffic
 
-![Selected Waymo long-range scenes: comparison model above, RV-SDTM below.](docs/figures/waymo_long_range.png)
+![Selected GT coverage comparison: green RV-SDTM only, red baseline only, light gray both matched, dark gray neither matched.](docs/showcase/assets/b_coverage.png)
 
-### Partial occlusion
+**Green:** GT matched only by RV-SDTM. **Red:** GT matched only by the baseline.
+Light/dark gray denote GT matched by both/neither model. These are **GT
+rectangles, not predicted box coordinates**. The figure's “FSHNet” label refers
+to **FSHNet-Light**. This is a selected diagnostic case; unmatched predictions
+are not drawn, so the image does not establish a false-positive rate.
 
-![Selected Waymo occlusion scenes: comparison model above, RV-SDTM below.](docs/figures/waymo_occlusion.png)
+### Full-scene BEV · four scenes, one preview
 
-These selected examples complement the aggregate validation metrics below.
+[![Animated BEV preview with blue RV-SDTM predictions across four Waymo scenes.](docs/showcase/assets/full_bev.gif)](docs/showcase/assets/full_bev.mp4)
+
+[Open / download the 1080p BEV video](docs/showcase/assets/full_bev.mp4).
+Blue boxes are RV-SDTM predictions. The 12-second sequence joins four distinct
+scenes; playback frame rate is **not** inference speed.
+
+### Multi-view detection gallery
+
+Each cover links to a 13-second, 1080p video with oblique, low-angle,
+frozen-frame orbit, and BEV views of the same source clip.
+
+| Cyclists | Pedestrians |
+|:---:|:---:|
+| [![Cyclists: open the multi-view video.](docs/showcase/assets/01_cyclists.jpg)](docs/showcase/assets/01_cyclists.mp4) | [![Pedestrians: open the multi-view video.](docs/showcase/assets/02_pedestrians.jpg)](docs/showcase/assets/02_pedestrians.mp4) |
+| **Distant pedestrians & cyclists** | **Dense traffic** |
+| [![Distant road users: open the multi-view video.](docs/showcase/assets/03_far_vru.jpg)](docs/showcase/assets/03_far_vru.mp4) | [![Dense traffic: open the multi-view video.](docs/showcase/assets/04_vehicles.jpg)](docs/showcase/assets/04_vehicles.mp4) |
+
+[Gallery, figure notes & viewing options](docs/SHOWCASE.md) ·
+[Long-range and occlusion figures](docs/SHOWCASE.md#earlier-qualitative-figures)
+
+These author-supplied visualizations use a **different checkpoint** from the
+archived Waymo metric row below. They are qualitative examples, not additional
+benchmark measurements; identities and selection rules are in the gallery.
 
 ## Measured validation performance
 
@@ -79,7 +103,7 @@ range. Their scores do **not** average to the overall result.
 | [Installation](docs/INSTALL.md) | Validated environment, dependencies, CUDA build, and installation checks |
 | [Getting started](docs/GETTING_STARTED.md) | Dataset layouts, preprocessing, training, and evaluation |
 | [Results](docs/RESULTS.md) | Measured metrics, evaluation protocols, and checkpoint identities |
-| [Qualitative examples](docs/SHOWCASE.md) | Full-size Waymo figures and comparison notes |
+| [Detection gallery](docs/SHOWCASE.md) | Waymo coverage figure, five videos, viewing options, and provenance |
 | [Release guide](docs/RV_SDTM_RELEASE.md) | Configuration provenance and archived-checkpoint compatibility |
 
 ## Configurations

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Interpretation &amp; provenance | RV-SDTM</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body><main class="notes">
+  <a href="index.html">← Back to the gallery</a>
+  <h1>Interpretation &amp; provenance</h1>
+  <h2>Models and scope</h2>
+  <p>These are author-supplied, offline Waymo visualizations, not a live detector or new evaluation.
+    RV-SDTM uses <code>fshnet_sdtm_best.yaml</code> and <code>checkpoint_epoch_12_SDTM_best.pth</code>.
+    The comparison uses <code>fshnet_light.yaml</code> and <code>checkpoint_epoch_12_FSHNet_light.pth</code>.
+    “FSHNet” in the figure is a display alias for <strong>FSHNet-Light</strong>, not FSHNet-Base.
+    The source records report complete loading of 902/902 and 377/377 tensors, respectively.</p>
+  <p>The visualization checkpoint hash begins <code>248718635f90</code>; it is not the archived
+    Waymo benchmark checkpoint (<code>f67a27ef0def</code>) in the repository's results table.
+    No official scores for the visualization checkpoint are supplied here. Full original identities
+    and source-frame mappings are preserved in <a href="metadata.json">metadata.json</a>.</p>
+  <h2 id="coverage">GT-coverage diagnostic</h2>
+  <p>Green rectangles are GT matched only by RV-SDTM, red only by FSHNet-Light, light gray by
+    both, and dark gray by neither. All valid GT in the display area remain visible. Rectangles
+    use <strong>GT geometry, not regressed prediction coordinates</strong>. The gold outline
+    locates the right-hand detail panel. Unmatched prediction markers are hidden, not removed
+    from diagnostic counts; the image cannot establish an absence of false positives.</p>
+  <p>Both models use display score threshold 0.5, their own training data configurations,
+    and native postprocessing, aligned by frame. Same-class one-to-one 3D IoU matching uses
+    Vehicle / Pedestrian / Cyclist thresholds 0.7 / 0.5 / 0.5. GT must have at least one LiDAR
+    point. The display area is the XY square |x|, |y| ≤ 75 m, not a radius-75 m circle.
+    This diagnostic does not implement the complete official AP/APH protocol; an IoU failure
+    can also cause an unmatched GT.</p>
+  <p>The displayed vehicle-scene frame 0146 maximizes RV-SDTM-only minus baseline-only
+    GT matches over 30 candidate frames, with earlier frames breaking ties. Counts are
+    36 RV-SDTM-only, 8 baseline-only, 70 both, and 32 neither: a selected-frame net difference
+    of +28, not a validation-set gain. The <a href="b_coverage_scores.csv">complete diagnostic CSV</a>
+    retains all 30 frames, including unmatched prediction counts.</p>
+  <h2>Prediction videos and timing</h2>
+  <p>Blue boxes are actual RV-SDTM predictions at score threshold 0.5. The supplied videos
+    do not apply GT-based filtering, extra NMS, tracking, target interpolation, or generated boxes.</p>
+  <p>Each of the four scenes contains 30 consecutive source frames at 10 Hz. The 12-second
+    BEV video joins the four distinct scenes with a fixed bird's-eye camera; each source frame
+    is repeated three times in a 30 fps render. Scene cuts do not represent a continuous drive.</p>
+  <p>Each 13-second multi-view video presents the same source clip as an elevated oblique
+    view, low-angle replay, final-frame camera orbit, and BEV replay. <strong>FROZEN-FRAME ORBIT</strong>
+    marks a stationary detection frame, not a new detection timestep. The multi-view and BEV
+    videos share the same four scenes. Playback FPS is not model inference FPS.</p>
+  <h2>Files and use</h2>
+  <p>The 12 retained media files are byte-identical to the source handoff: five MP4s, six
+    covers/stills, and a BEV GIF. Four redundant multi-view GIFs are omitted; metadata asset
+    references were adjusted accordingly. Original predictions and diagnostic counts are unchanged.</p>
+  <p>This local gallery does not imply a public deployment. Dataset and media rights are not
+    granted or relicensed by the source-code license; confirm applicable permissions before
+    public hosting. No raw point clouds, annotation files, or model weights are included.</p>
+  <p><a href="index.html">Return to the gallery</a> · <a href="metadata.json">Source metadata</a> ·
+    <a href="b_coverage_scores.csv">Complete diagnostic CSV</a></p>
+</main></body>
+</html>

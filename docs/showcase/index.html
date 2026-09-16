@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Selected Waymo detections from RV-SDTM: GT coverage, full-scene BEV and four multi-view prediction videos.">
+  <title>RV-SDTM | Detection Gallery</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <header>
+    <a class="brand" href="index.html">RV-<span>SDTM</span></a>
+    <nav aria-label="Gallery navigation">
+      <a href="#comparison">Coverage</a><a href="#bev">BEV</a>
+      <a href="#scenes">Multi-view</a><a href="protocol.html">Notes</a>
+    </nav>
+  </header>
+  <div class="intro">
+    <p class="eyebrow">WAYMO · SELECTED DETECTION EXAMPLES</p>
+    <h1>Cross-View Semantic Injection and Sparse Dual-Path Token Mixer for 3-D Object Detection</h1>
+    <p>Range-view context meets voxel geometry. Explore RV-SDTM detections
+      across cyclists, pedestrians, distant road users, and dense traffic.</p>
+  </div>
+  <section id="comparison" aria-labelledby="coverage-title">
+    <h2 id="coverage-title">GT coverage in dense traffic</h2>
+    <article>
+      <div class="caption"><h3>RV-SDTM × FSHNet-Light</h3>
+        <a href="assets/b_coverage.png" target="_blank" rel="noopener">Full-size image ↗</a></div>
+      <a href="assets/b_coverage.png" target="_blank" rel="noopener">
+        <img class="still" src="assets/b_coverage.png" width="1920" height="1080"
+          alt="GT coverage: green RV-SDTM only, red FSHNet-Light only, light gray both matched, dark gray neither matched.">
+      </a>
+    </article>
+    <p class="context">GT rectangles colored by match status, not predicted coordinates.
+      Selected case; unmatched predictions are not drawn. The image's “FSHNet” label means FSHNet-Light.
+      <a href="protocol.html#coverage">How to read the comparison →</a></p>
+  </section>
+  <section id="bev" aria-labelledby="bev-title">
+    <h2 id="bev-title">Full-scene BEV</h2>
+    <article id="full_bev">
+      <div class="caption"><h3>Four scenes · fixed bird's-eye view</h3>
+        <a href="assets/full_bev.mp4" download>1080p MP4 ↗</a></div>
+      <video controls muted loop playsinline preload="none" poster="assets/full_bev.png"
+        src="assets/full_bev.mp4" aria-label="RV-SDTM full-scene BEV across four scenes">
+        <a href="assets/full_bev.mp4">Download the BEV video</a>
+      </video>
+    </article>
+    <p class="context">Blue boxes are RV-SDTM predictions. Four distinct scenes, 12 seconds;
+      playback frame rate is not inference speed.</p>
+  </section>
+  <section id="scenes" aria-labelledby="scenes-title">
+    <h2 id="scenes-title">One scene, multiple perspectives</h2>
+    <p class="context">Oblique view → low-angle replay → frozen-frame orbit → BEV replay.</p>
+    <div class="cards">
+      <article id="01_cyclists">
+        <div class="caption"><h3>Cyclists</h3><a href="assets/01_cyclists.mp4" download>1080p MP4 ↗</a></div>
+        <video controls muted loop playsinline preload="none" poster="assets/01_cyclists.jpg"
+          src="assets/01_cyclists.mp4" aria-label="Cyclists multi-view prediction video">
+          <a href="assets/01_cyclists.mp4">Download the cyclists video</a>
+        </video>
+      </article>
+      <article id="02_pedestrians">
+        <div class="caption"><h3>Pedestrians</h3><a href="assets/02_pedestrians.mp4" download>1080p MP4 ↗</a></div>
+        <video controls muted loop playsinline preload="none" poster="assets/02_pedestrians.jpg"
+          src="assets/02_pedestrians.mp4" aria-label="Pedestrians multi-view prediction video">
+          <a href="assets/02_pedestrians.mp4">Download the pedestrians video</a>
+        </video>
+      </article>
+      <article id="03_far_vru">
+        <div class="caption"><h3>Distant road users</h3><a href="assets/03_far_vru.mp4" download>1080p MP4 ↗</a></div>
+        <video controls muted loop playsinline preload="none" poster="assets/03_far_vru.jpg"
+          src="assets/03_far_vru.mp4" aria-label="Distant pedestrians and cyclists multi-view prediction video">
+          <a href="assets/03_far_vru.mp4">Download the distant road users video</a>
+        </video>
+      </article>
+      <article id="04_vehicles">
+        <div class="caption"><h3>Dense traffic</h3><a href="assets/04_vehicles.mp4" download>1080p MP4 ↗</a></div>
+        <video controls muted loop playsinline preload="none" poster="assets/04_vehicles.jpg"
+          src="assets/04_vehicles.mp4" aria-label="Dense traffic multi-view prediction video">
+          <a href="assets/04_vehicles.mp4">Download the dense traffic video</a>
+        </video>
+      </article>
+    </div>
+  </section>
+  <footer>
+    <a href="protocol.html">Interpretation &amp; provenance</a> ·
+    <a href="metadata.json">Source metadata</a> ·
+    <a href="https://github.com/huhuhu301/Cross-View-Semantic-Injection-and-Sparse-Dual-Path-Token-Mixer-for-3-D-Object-Detection">Project repository</a>
+  </footer>
+</main>
+<script src="playback.js"></script>
+</body>
+</html>

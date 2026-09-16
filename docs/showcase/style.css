@@ -1,0 +1,42 @@
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: #060b13; color: #e7effb; font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+a { color: #8cbbff; text-decoration: none; }
+a:hover { color: white; text-decoration: underline; }
+a:focus-visible, video:focus-visible { outline: 2px solid #329dff; outline-offset: 4px; }
+main { max-width: 1320px; margin: auto; padding: 32px 28px 60px; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 6px 0 32px; }
+.brand { font-size: 34px; font-weight: 750; letter-spacing: -1px; color: #e7effb; }
+.brand span { color: #329dff; }
+nav { display: flex; flex-wrap: wrap; gap: 12px 26px; font-size: 15px; }
+.intro { max-width: 1040px; padding: 12px 0 32px; }
+.eyebrow { color: #83b9ff; font-size: 12px; letter-spacing: .12em; font-weight: 650; }
+h1 { font-size: clamp(27px, 3.5vw, 43px); line-height: 1.2; margin: 12px 0 20px; letter-spacing: -.025em; }
+h2 { font-size: 26px; margin: 12px 0 20px; }
+h3 { font-size: 19px; margin: 0; font-weight: 600; }
+.intro p:not(.eyebrow), .context, footer { color: #b7c9e1; }
+.context { font-size: 14px; max-width: 1040px; }
+section { scroll-margin-top: 20px; margin-bottom: 44px; }
+.cards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+article { overflow: hidden; background: #0b1421; border: 1px solid #1c2b40; border-radius: 14px; }
+.caption { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; gap: 16px; }
+.caption a { white-space: nowrap; font-size: 14px; }
+video { display: block; width: 100%; aspect-ratio: 16/9; background: #070d17; }
+.still { display: block; width: 100%; height: auto; }
+footer { padding-top: 8px; border-top: 1px solid #1c2b40; font-size: 14px; }
+.notes { max-width: 960px; }
+.notes h2 { margin-top: 30px; font-size: 22px; }
+.notes p, .notes li { color: #b7c9e1; }
+.notes code { overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  main { padding: 20px 14px 32px; }
+  header { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .brand { font-size: 29px; }
+  nav { gap: 10px 20px; }
+  h2 { font-size: 23px; }
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  .caption { padding: 14px; flex-wrap: wrap; gap: 8px; }
+  .caption h3 { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
