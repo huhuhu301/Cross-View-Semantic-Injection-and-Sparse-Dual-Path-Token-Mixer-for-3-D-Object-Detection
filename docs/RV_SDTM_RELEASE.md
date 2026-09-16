@@ -84,9 +84,10 @@ end-to-end conversion, train, and official-evaluation cycle is not claimed.
 - AP 0.380, CDS 0.295, ATE 0.429, ASE 0.325, AOE 0.705
 - evaluation used paired seed 666, four A10 GPUs, global evaluation batch 8,
   and runtime `RV_VOX_CHUNK=512`
-- training used eight A10 GPUs, global batch 16, seed 666, full FP32, and
-  runtime `RV_VOX_CHUNK=512`; the run resumed complete state at epoch 1 and
-  continued through epoch 12
+- training used eight A10 GPUs, global batch 16, seed 666, and runtime
+  `RV_VOX_CHUNK=512`; epoch 1 used AMP, then the run resumed model and optimizer
+  state and trained epochs 2–12 in FP32. The restored RNG state was not
+  bitwise-continuous with epoch 1
 - recorded environment: Ubuntu 18.04, Python 3.8.20, PyTorch 1.10.0+cu113,
   torchvision 0.11.0+cu113, CUDA 11.3, cuDNN 8.2, spconv-cu113 2.3.6,
   torch-scatter 2.1.2, and av2 0.2.1

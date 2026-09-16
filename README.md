@@ -305,6 +305,9 @@ software versions, checkpoint SHA-256, and the complete metric output. These
 details distinguish a scientific reproduction from a successful code smoke
 test.
 
+`SOURCE_SHA256SUMS.txt` records the release source files (excluding itself).
+Verify a downloaded source tree with `sha256sum -c SOURCE_SHA256SUMS.txt`.
+
 ## License
 
 The source is released under [Apache License 2.0](LICENSE). Required upstream
