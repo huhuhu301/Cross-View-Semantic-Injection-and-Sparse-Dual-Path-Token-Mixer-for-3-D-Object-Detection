@@ -72,11 +72,14 @@ benchmark measurements; identities and selection rules are in the gallery.
 
 | Dataset | Checkpoint and protocol | Result |
 |---|---|---|
-| Waymo | epoch 12, official validation | L1 mAP/mAPH **82.7917/80.5876**; L2 mAP/mAPH **76.8013/74.6541** |
+| Waymo | epoch 12, official validation | L1 mAP/mAPH **82.8917/80.5876**†; L2 mAP/mAPH **76.8013/74.6541** |
 | nuScenes | epoch 24, official validation, paired seed | NDS **71.0552**; mAP **67.4185** |
 | AV2 | epoch 12, all 23,547 validation frames, 26 classes, 200 m ROI-only | AP/CDS **38.0/29.5**; mATE/mASE/mAOE **0.429/0.325/0.705** |
 
-Each row reports an archived checkpoint evaluation. AP-style values are
+† Waymo L1 mAP is an author-requested manual update, not re-evaluated or
+verified against the archived logs. The archived results remain unchanged.
+
+Except for this noted update, values report archived checkpoint evaluations. AP-style values are
 percentages; the AV2 error terms retain their native units. The AV2 result uses
 the explicit **200 m ROI-only** protocol, which differs from the default 150 m
 leaderboard protocol. Checkpoint hashes and evaluation details are recorded in
