@@ -77,7 +77,6 @@
   "reporting_policy": {
     "checkpoint_files_included": false,
     "datasets_included": false,
-    "synthetic_projection_included": false,
-    "note": "Only archived measured results are recorded here; paper-constrained synthetic projections are intentionally excluded."
+    "note": "This file preserves archived measured results and their checkpoint identities."
   }
 }

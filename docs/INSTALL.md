@@ -3,6 +3,22 @@
 This guide covers the validated environment for RV-SDTM. Run installation
 commands from the cloned repository root.
 
+## Hardware validation
+
+The project has completed training and inference validation on the following
+GPU platforms:
+
+| GPU | Validated workflow |
+|---|---|
+| NVIDIA A10 | Training, evaluation, and release build checks |
+| NVIDIA A100 | Training |
+| NVIDIA GeForce RTX 4090 | Inference and runtime profiling |
+
+These validations establish compatibility for the corresponding workflows.
+The version-pinned installation instructions below document the **A10
+reference environment**; the hardware table records the broader validation
+coverage of the project.
+
 ## Recommended and validated stack
 
 Use the local A10-server stack that produced the archived AV2 result and passed

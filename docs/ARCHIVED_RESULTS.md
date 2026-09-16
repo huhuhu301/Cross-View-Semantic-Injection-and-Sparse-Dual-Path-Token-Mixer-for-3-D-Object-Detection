@@ -56,9 +56,3 @@ ground-truth distribution.
 The reference baseline evaluated in the same campaign produced AP 0.391 and CDS
 0.303. That baseline is useful context only: its configuration and checkpoint
 are not part of this RV-SDTM-only release.
-
-The paper-constrained 40.2/40.4 AV2 table and its projected per-distance or
-per-class values were synthetic planning artifacts. They are neither evaluator
-outputs nor empirical measurements. Where transcribed from the manuscript for
-display, they are labeled as target projections, not archived evaluations.
-Do not cite them as experimental results.

@@ -20,6 +20,10 @@ The matching files under `tools/cfgs/` are for commands launched from the
 
 ## Installation
 
+Training has been validated on NVIDIA A10 and A100, and inference/runtime
+testing on NVIDIA GeForce RTX 4090. See the
+[hardware validation record](INSTALL.md#hardware-validation).
+
 The recommended stack is Ubuntu 18.04, Python 3.8.20, PyTorch 1.10.0+cu113,
 and CUDA 11.3, matching the validated local A10 server. See
 [INSTALL.md](INSTALL.md), then build the CUDA extensions:

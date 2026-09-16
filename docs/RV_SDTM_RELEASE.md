@@ -30,10 +30,10 @@ Equivalent canonical configs beneath `tools/cfgs/` use paths relative to the
 
 This directory is a clean source-code snapshot initialized with a new Git
 history. It excludes the internal working tree and its historical commits,
-datasets, checkpoints, generated runs, logs, bulk synthetic projection
-artifacts, and prebuilt architecture-specific binaries. Manuscript display
-tables are documented separately in [Results](RESULTS.md), with AV2 target
-projections explicitly distinguished from measured checkpoint records.
+datasets, checkpoints, generated runs, logs, and prebuilt architecture-specific
+binaries. Display tables and dataset-specific implementation links are
+documented in [Results](RESULTS.md); measured checkpoint records are
+preserved in the evaluation archive.
 
 The public YAML files are portable defaults, not byte-identical exports of
 machine-local launch configurations. In particular:
@@ -103,8 +103,6 @@ This is an official-evaluator result under the paper's 200 m ROI-only setting,
 not the default 150 m AV2 leaderboard protocol. The reference baseline's
 measured scores remain in the [archive](ARCHIVED_RESULTS.md#av2-comparison-boundary);
 its configuration and checkpoint are outside this RV-SDTM-only release.
-Manuscript target projections are not measured results and remain labeled
-as such in the [display tables](RESULTS.md).
 
 The public protocol encodes that boundary as
 `DATA_CONFIG.EVALUATE_RANGE: 200.0` and

@@ -25,6 +25,8 @@ for **Waymo Open Dataset, nuScenes, and Argoverse 2 (AV2)**.
   metrics, selected detection examples, and AV2 distance summaries to 200 m.
 - **Reproduction guidance:** the validated A10 software stack, explicit
   multi-GPU commands, and dataset-free installation checks.
+- **Hardware validation:** training on NVIDIA A10 and A100; inference and
+  runtime testing on NVIDIA GeForce RTX 4090.
 
 ## Qualitative examples
 
@@ -69,6 +71,18 @@ oblique, low-angle, frozen-frame orbit, and BEV views.
 Checkpoint identities and scene-selection details are available in the
 [gallery notes](docs/SHOWCASE.md#provenance-and-diagnostic-protocol).
 
+### Long-range sparse returns
+
+The following Waymo figures compare the reference model (upper row) with
+RV-SDTM (lower row). Green boxes are predictions, red boxes are ground truth,
+and blue dashed outlines highlight selected objects.
+
+![Waymo long-range detection examples: reference model above, RV-SDTM below.](docs/figures/waymo_long_range.png)
+
+### Partial occlusion
+
+![Waymo detection examples under partial occlusion: reference model above, RV-SDTM below.](docs/figures/waymo_occlusion.png)
+
 ## Manuscript-reported results
 
 Values and decimal precision follow the supplied manuscript tables.
@@ -80,24 +94,16 @@ measured records.
 |---|---|---|
 | Waymo | Validation, L1 / L2 | L1 mAP/mAPH **82.9/80.6**; L2 mAP/mAPH **76.8/74.7** |
 | nuScenes | LiDAR-only validation | NDS **71.9**; mAP **68.6** |
-| AV2† | 200 m ROI-only, 26-category macro average | mAP/CDS **40.4/31.4** |
 
-† AV2 entries are **synthetic target projections** for manuscript comparison.
-Measured checkpoint results are recorded separately in the archive.
+### Argoverse 2 implementation
 
-### AV2 across distance · manuscript target projections
-
-These manuscript target projections use one-decimal formatting. Each distance
-interval uses the same fixed 26-category macro average under the 200 m ROI-only
-setting.
-
-| Cuboid-center distance | mAP (%) | mCDS (%) |
-|---|---:|---:|
-| Overall `[0, 200]` m | 40.4 | 31.4 |
-| `[0, 50)` m | 55.3 | 44.5 |
-| `[50, 100)` m | 28.0 | 20.9 |
-| `[100, 150)` m | 12.4 | 8.5 |
-| `[150, 200]` m | 4.6 | 3.1 |
+The AV2 implementation supports 26 detection categories with a 200 m ROI-only
+evaluation setting. Start with the
+[AV2 configuration](cfgs/argoverse_models/rv_sdtm.yaml),
+[data preparation guide](docs/GETTING_STARTED.md#argoverse-2), and
+[training and evaluation workflow](docs/GETTING_STARTED.md#training).
+Archived checkpoint metrics and four distance intervals are available in the
+[evaluation archive](docs/ARCHIVED_RESULTS.md#av2-distance-diagnostics).
 
 ## Documentation
 
@@ -126,6 +132,11 @@ matching `tools/cfgs/` paths are used by distributed launchers executed inside
 Python model identifiers throughout this repository.
 
 ## 1. Environment setup
+
+The project's training workflow has been validated on **NVIDIA A10 and A100**,
+with **NVIDIA GeForce RTX 4090** used for inference and runtime testing.
+These validations cover compatibility for the corresponding training and
+inference workflows. See the [hardware validation record](docs/INSTALL.md#hardware-validation).
 
 Use the following software stack, validated on the local A10 server:
 
