@@ -22,15 +22,22 @@ nuScenes, and Argoverse 2 (AV2)**.
 
 ## Qualitative examples
 
-Selected Waymo long-range scenes illustrate detections under sparse returns.
-The upper row shows the comparison model and the lower row shows RV-SDTM;
-green boxes are predictions, red boxes are ground truth, and blue dashed
-outlines highlight examples. These images are illustrative, not aggregate
-accuracy measurements.
+Selected Waymo scenes illustrate detections under sparse returns and partial
+occlusion. In each figure, the upper row shows the comparison model and the
+lower row shows RV-SDTM. Green boxes are predictions, red boxes are ground
+truth, and blue dashed outlines mark the selected objects. These examples are
+illustrative; aggregate accuracy is reported below.
 
-<p align="center">
-  <img src="docs/figures/waymo_long_range.png" width="980" alt="Selected long-range Waymo scenes: comparison model above, RV-SDTM below" />
-</p>
+### Long-range sparse returns
+
+![Selected Waymo long-range scenes: comparison model above, RV-SDTM below.](docs/figures/waymo_long_range.png)
+
+### Partial occlusion
+
+![Selected Waymo occlusion scenes: comparison model above, RV-SDTM below.](docs/figures/waymo_occlusion.png)
+
+See the [figure notes](docs/SHOWCASE.md) for the comparison model's identity
+and full-size views.
 
 ## Measured validation performance
 
@@ -60,10 +67,6 @@ overall score.
 | `[50, 100)` m | 25.5 | 19.0 |
 | `[100, 150)` m | 10.7 | 7.4 |
 | `[150, 200]` m | 3.6 | 2.4 |
-
-For the corresponding occlusion examples, see the
-[qualitative gallery](docs/SHOWCASE.md). The comparison model is identified
-there.
 
 ## Configurations
 
