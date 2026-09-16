@@ -19,6 +19,10 @@ The AV2 AP/CDS values are 38.0/29.5 when expressed as percentages. The 200 m
 ROI-only setting is the paper protocol and must not be compared as though it
 were the default 150 m AV2 leaderboard protocol.
 
+The supplied manuscript draft quotes 71.9 NDS / 68.6 mAP for nuScenes and
+40.4 mAP for AV2. Those numbers are not the archived checkpoint evaluations
+documented here; this release uses the measured values in the table above.
+
 ## AV2 distance diagnostics
 
 | Radial annulus | mAP | mCDS |

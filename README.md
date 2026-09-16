@@ -1,22 +1,36 @@
 # RV-SDTM
 
-RV-SDTM is a sparsity-first LiDAR 3D object detector developed on
-[OpenPCDet](https://github.com/open-mmlab/OpenPCDet). It combines early
-range-view-to-voxel geometric fusion with sparse dynamic token routing to model
-local structure and long-range context. This repository provides complete data
-preparation, training, resume, and evaluation paths for Waymo Open Dataset,
-nuScenes, and Argoverse 2 (AV2).
+*Cross-view semantic injection and sparse dual-path token mixing for LiDAR 3-D
+object detection.*
 
-## Highlights
+At long range, an object may contribute only a handful of LiDAR returns.
+RV-SDTM keeps the metric precision of sparse voxels while recovering context
+from the sensor's angular range view. It injects range-view evidence **before**
+the sparse backbone, then combines local sparse convolutions with selectively
+routed global context. The model is developed on
+[OpenPCDet](https://github.com/open-mmlab/OpenPCDet) and has complete data
+preparation, training, resume, and evaluation paths for **Waymo Open Dataset,
+nuScenes, and Argoverse 2 (AV2)**.
 
-- **Early cross-view fusion.** RangeViewVFE and GeoCVA inject range-view
-  geometry into voxel features before sparse downsampling.
-- **Sparse dynamic token modeling.** SDTM retains efficient local sparse
-  convolution while routing selected tokens through global linear attention.
-- **Adaptive feature aggregation.** Attentional pillar pooling and AFD improve
-  BEV aggregation and class-aware sparse support.
-- **Three benchmark recipes.** One core architecture supports 3 Waymo,
-  10 nuScenes, and 26 AV2 classes, including the long-range 200 m AV2 protocol.
+[Measured results](#measured-validation-performance) ·
+[Qualitative examples](#qualitative-examples) ·
+[Install](#1-environment-setup) ·
+[Prepare data](#2-dataset-preparation) ·
+[Train](#3-reproduce-training) ·
+[Evaluate](#4-official-evaluation) ·
+[Figure gallery](docs/SHOWCASE.md)
+
+## Qualitative examples
+
+Selected Waymo long-range scenes illustrate detections under sparse returns.
+The upper row shows the comparison model and the lower row shows RV-SDTM;
+green boxes are predictions, red boxes are ground truth, and blue dashed
+outlines highlight examples. These images are illustrative, not aggregate
+accuracy measurements.
+
+<p align="center">
+  <img src="docs/figures/waymo_long_range.png" width="980" alt="Selected long-range Waymo scenes: comparison model above, RV-SDTM below" />
+</p>
 
 ## Measured validation performance
 
@@ -26,12 +40,30 @@ nuScenes, and Argoverse 2 (AV2).
 | nuScenes | epoch 24, official validation, paired seed | NDS **71.0552**; mAP **67.4185** |
 | AV2 | epoch 12, all 23,547 validation frames, 26 classes, 200 m ROI-only | AP/CDS **38.0/29.5**; mATE/mASE/mAOE **0.429/0.325/0.705** |
 
-These are measured checkpoint results; AP-style values are percentage points
-and AV2 error terms use their native units. The AV2 row uses the explicit 200 m
-ROI-only paper protocol and is not directly comparable with the default 150 m
-leaderboard protocol. Checkpoint hashes, detailed metrics, and distance
-diagnostics are recorded in [docs/RESULTS.md](docs/RESULTS.md); checkpoints are
-not included in this repository.
+These are **measured checkpoint results**, not manuscript target values.
+AP-style values are percentage points and AV2 error terms use their native
+units. The AV2 row uses the explicit 200 m ROI-only protocol and is not
+directly comparable with the default 150 m leaderboard protocol. Checkpoint
+hashes and evaluation details are in [docs/RESULTS.md](docs/RESULTS.md);
+checkpoints are not included in this repository.
+
+### AV2 across distance
+
+The same archived AV2 evaluation includes four independently filtered radial
+annuli. The low absolute score in the last interval illustrates why 200 m
+perception remains difficult; the annulus scores do **not** average to the
+overall score.
+
+| Cuboid-center distance | mAP (%) | mCDS (%) |
+|---|---:|---:|
+| `[0, 50)` m | 52.5 | 42.2 |
+| `[50, 100)` m | 25.5 | 19.0 |
+| `[100, 150)` m | 10.7 | 7.4 |
+| `[150, 200]` m | 3.6 | 2.4 |
+
+For the corresponding occlusion examples, see the
+[qualitative gallery](docs/SHOWCASE.md). The comparison model is identified
+there.
 
 ## Configurations
 

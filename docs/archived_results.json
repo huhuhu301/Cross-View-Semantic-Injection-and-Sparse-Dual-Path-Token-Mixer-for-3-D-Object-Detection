@@ -70,7 +70,7 @@
       "protocol_notes": [
         "The 200 m ROI-only setting is a paper protocol, not the default 150 m AV2 leaderboard setting.",
         "Distance-annulus values use the official formula on independently filtered annuli.",
-        "Training used seed 666, global batch size 16, FP32, and RV_VOX_CHUNK=512."
+        "Training used seed 666, global batch size 16, and RV_VOX_CHUNK=512; epoch 1 used AMP and epochs 2-12 resumed in FP32 without bitwise-continuous RNG state."
       ]
     }
   },

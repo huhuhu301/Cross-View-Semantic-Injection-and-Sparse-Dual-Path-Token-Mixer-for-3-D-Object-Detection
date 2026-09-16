@@ -8,6 +8,7 @@ Only the Python standard library is required.
 """
 
 import argparse
+import hashlib
 import ipaddress
 import os
 import re
@@ -18,6 +19,17 @@ from pathlib import Path
 
 DEFAULT_MAX_FILE_MIB = 5
 READ_SAMPLE_BYTES = 8192
+
+# The only binary files in the release are two author-provided qualitative
+# result figures. Pinning their bytes keeps the binary-artifact rule intact.
+APPROVED_FIGURES = {
+    'docs/figures/waymo_long_range.png': (
+        '355acab4cc0885e7a8bcd01f15fda6cc6d836229d2144179f7024b2b39f41aba',
+        b'\x89PNG\r\n\x1a\n'),
+    'docs/figures/waymo_occlusion.png': (
+        'ad662463d24effc431a504e9eac32b8c534df5fccb5f7660e3d99ca24d058409',
+        b'\x89PNG\r\n\x1a\n'),
+}
 
 FORBIDDEN_SUFFIXES = {
     '.7z', '.arrow', '.bin', '.ckpt', '.core', '.dill', '.dll', '.dylib',
@@ -170,6 +182,16 @@ def scan_file(root, relative_path, max_bytes):
             '{}: forbidden generated/binary artifact'.format(relative_path))
 
     data = path.read_bytes()
+    approved_figure = APPROVED_FIGURES.get(relative_path.as_posix())
+    if approved_figure is not None:
+        expected_hash, signature = approved_figure
+        if not data.startswith(signature):
+            findings.append('{}: invalid approved figure format'.format(
+                relative_path))
+        if hashlib.sha256(data).hexdigest() != expected_hash:
+            findings.append('{}: approved figure hash mismatch'.format(
+                relative_path))
+        return findings
     if b'\0' in data[:READ_SAMPLE_BYTES]:
         findings.append('{}: binary content detected'.format(relative_path))
         return findings
