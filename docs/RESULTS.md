@@ -1,8 +1,8 @@
-# Archived evaluation results
+# Range–Voxel 3D Detection: validation results
 
-This page records measured results that are safe to associate with this source
-release. Checkpoints and raw evaluation outputs are archived separately and are
-not distributed in the repository.
+This page records the archived RV-SDTM checkpoint evaluations associated with
+this source release. Checkpoints and raw evaluation outputs are archived
+separately and are not distributed in the repository.
 
 The same summary is available in machine-readable form as
 [`archived_results.json`](archived_results.json).

@@ -1,8 +1,9 @@
 # Getting started
 
-This source release exposes one RV-SDTM protocol for each supported dataset.
-For checkpoint identities, archived metrics, and scientific caveats, read the
-[release guide](RV_SDTM_RELEASE.md).
+Range–Voxel 3D Detection provides one RV-SDTM configuration for each supported
+dataset. This guide covers data preparation and the commands needed to train
+and evaluate a model. For checkpoint identities and compatibility details, see
+the [release guide](RV_SDTM_RELEASE.md).
 
 ## Canonical configurations
 
@@ -106,8 +107,9 @@ Replace the model configuration with the nuScenes or AV2 canonical path for
 those datasets. YAML supplies the per-GPU batch size unless a global
 `--batch_size` is provided.
 
-The archived AV2 epoch-12 result used eight A10 GPUs, global batch size 16,
-seed 666, full FP32, and `RV_VOX_CHUNK=512`. Match those settings explicitly:
+The archived AV2 run used eight A10 GPUs, global batch size 16, seed 666,
+and `RV_VOX_CHUNK=512`. Epoch 1 used AMP; the resumed epochs 2–12 used FP32.
+The reference command below uses FP32 throughout:
 
 ```bash
 (cd tools && bash scripts/dist_train.sh 8 \
@@ -135,9 +137,12 @@ python tools/test.py \
     --root_dir . --output_dir output/nuscenes_rv_sdtm_eval
 ```
 
-Historical checkpoints are valid for evaluation and model-only initialization.
-Do not full-resume their old optimizer state with `--ckpt`; see the release
-guide for the corrected optimizer-coverage boundary.
+Archived checkpoints can be used for evaluation and model-only initialization.
+The archived Waymo and nuScenes optimizer states are incompatible with the
+released optimizer grouping; use `--pretrained_model` when initializing
+training from those checkpoints. The archived AV2 checkpoint and checkpoints
+created by this release support full resume with `--ckpt`. See the
+[compatibility guide](RV_SDTM_RELEASE.md#4-historical-checkpoint-compatibility).
 
 For the archived AV2 evaluation settings, run on four GPUs with global batch
 size 8, seed 666, and the same runtime chunk override:

@@ -1,32 +1,38 @@
-# RV-SDTM
+# Range–Voxel 3D Detection
 
-*Cross-view semantic injection and sparse dual-path token mixing for LiDAR 3-D
-object detection.*
+*RV-SDTM · LiDAR object detection on Waymo, nuScenes, and Argoverse 2.*
 
-At long range, an object may contribute only a handful of LiDAR returns.
-RV-SDTM keeps the metric precision of sparse voxels while recovering context
-from the sensor's angular range view. It injects range-view evidence **before**
-the sparse backbone, then combines local sparse convolutions with selectively
-routed global context. The model is developed on
-[OpenPCDet](https://github.com/open-mmlab/OpenPCDet) and has complete data
-preparation, training, resume, and evaluation paths for **Waymo Open Dataset,
-nuScenes, and Argoverse 2 (AV2)**.
+Objects at long range or behind an occluder can leave only a few LiDAR returns.
+RV-SDTM brings range-view context and voxel geometry together for LiDAR 3D
+object detection, with a focus on these challenging scenes. Built on
+[OpenPCDet](https://github.com/open-mmlab/OpenPCDet), this repository provides
+the implementation, dataset-specific configurations, and reproducible workflows
+for **Waymo Open Dataset, nuScenes, and Argoverse 2 (AV2)**.
 
-[Measured results](#measured-validation-performance) ·
 [Qualitative examples](#qualitative-examples) ·
+[Validation results](#measured-validation-performance) ·
 [Install](#1-environment-setup) ·
 [Prepare data](#2-dataset-preparation) ·
 [Train](#3-reproduce-training) ·
 [Evaluate](#4-official-evaluation) ·
-[Figure gallery](docs/SHOWCASE.md)
+[Documentation](#documentation)
+
+### What is included
+
+- **Three benchmarks:** data preparation, training, checkpoint resume, and
+  official-evaluator integration for Waymo, nuScenes, and AV2.
+- **Results with context:** archived checkpoint metrics, selected detection
+  examples, and AV2 distance diagnostics extending to 200 m.
+- **Reproduction guidance:** the validated A10 software stack, explicit
+  multi-GPU commands, and dataset-free installation checks.
 
 ## Qualitative examples
 
-Selected Waymo scenes illustrate detections under sparse returns and partial
-occlusion. In each figure, the upper row shows the comparison model and the
-lower row shows RV-SDTM. Green boxes are predictions, red boxes are ground
-truth, and blue dashed outlines mark the selected objects. These examples are
-illustrative; aggregate accuracy is reported below.
+The Waymo examples below compare detections in sparse and partially occluded
+scenes. **Upper row:** comparison model. **Lower row:** RV-SDTM. Green boxes
+denote predictions, red boxes denote ground truth, and blue dashed outlines
+highlight selected objects. See the [figure notes](docs/SHOWCASE.md) for source
+and comparison details.
 
 ### Long-range sparse returns
 
@@ -36,8 +42,7 @@ illustrative; aggregate accuracy is reported below.
 
 ![Selected Waymo occlusion scenes: comparison model above, RV-SDTM below.](docs/figures/waymo_occlusion.png)
 
-See the [figure notes](docs/SHOWCASE.md) for the comparison model's identity
-and full-size views.
+These selected examples complement the aggregate validation metrics below.
 
 ## Measured validation performance
 
@@ -47,19 +52,18 @@ and full-size views.
 | nuScenes | epoch 24, official validation, paired seed | NDS **71.0552**; mAP **67.4185** |
 | AV2 | epoch 12, all 23,547 validation frames, 26 classes, 200 m ROI-only | AP/CDS **38.0/29.5**; mATE/mASE/mAOE **0.429/0.325/0.705** |
 
-These are **measured checkpoint results**, not manuscript target values.
-AP-style values are percentage points and AV2 error terms use their native
-units. The AV2 row uses the explicit 200 m ROI-only protocol and is not
-directly comparable with the default 150 m leaderboard protocol. Checkpoint
-hashes and evaluation details are in [docs/RESULTS.md](docs/RESULTS.md);
-checkpoints are not included in this repository.
+Each row reports an archived checkpoint evaluation. AP-style values are
+percentages; the AV2 error terms retain their native units. The AV2 result uses
+the explicit **200 m ROI-only** protocol, which differs from the default 150 m
+leaderboard protocol. Checkpoint hashes and evaluation details are recorded in
+[Results](docs/RESULTS.md). Checkpoint files are archived separately and are
+not included in this source release.
 
 ### AV2 across distance
 
-The same archived AV2 evaluation includes four independently filtered radial
-annuli. The low absolute score in the last interval illustrates why 200 m
-perception remains difficult; the annulus scores do **not** average to the
-overall score.
+The same AV2 evaluation is also reported in four independently filtered
+distance intervals. These diagnostics show how detection quality changes with
+range. Their scores do **not** average to the overall result.
 
 | Cuboid-center distance | mAP (%) | mCDS (%) |
 |---|---:|---:|
@@ -67,6 +71,16 @@ overall score.
 | `[50, 100)` m | 25.5 | 19.0 |
 | `[100, 150)` m | 10.7 | 7.4 |
 | `[150, 200]` m | 3.6 | 2.4 |
+
+## Documentation
+
+| Guide | Contents |
+|---|---|
+| [Installation](docs/INSTALL.md) | Validated environment, dependencies, CUDA build, and installation checks |
+| [Getting started](docs/GETTING_STARTED.md) | Dataset layouts, preprocessing, training, and evaluation |
+| [Results](docs/RESULTS.md) | Measured metrics, evaluation protocols, and checkpoint identities |
+| [Qualitative examples](docs/SHOWCASE.md) | Full-size Waymo figures and comparison notes |
+| [Release guide](docs/RV_SDTM_RELEASE.md) | Configuration provenance and archived-checkpoint compatibility |
 
 ## Configurations
 
@@ -80,10 +94,13 @@ Use the paths above for commands launched from the repository root. The
 matching `tools/cfgs/` paths are used by distributed launchers executed inside
 `tools/`. Always pass the configuration explicitly.
 
+The repository uses a descriptive project name; the method name **RV-SDTM**,
+configuration filenames, and Python model identifiers remain consistent with
+the archived experiments.
+
 ## 1. Environment setup
 
-The recommended source-build environment is the same stack used on the local
-A10 server for release validation:
+Use the following software stack, validated on the local A10 server:
 
 - Ubuntu 18.04 (Linux)
 - Python 3.8.20
@@ -92,10 +109,13 @@ A10 server for release validation:
 - spconv-cu113 2.3.6 and torch-scatter 2.1.2
 - NVIDIA driver 470.82.01; four NVIDIA A10 24 GB GPUs were used locally
 
-Create the environment and compile the required CUDA extensions from the
-repository root:
+Clone the repository, create the environment, and compile the required CUDA
+extensions:
 
 ```bash
+git clone https://github.com/huhuhu301/Range-Voxel-3D-Detection.git
+cd Range-Voxel-3D-Detection
+
 conda create -n rv-sdtm python=3.8.20 -y
 conda activate rv-sdtm
 
@@ -202,7 +222,7 @@ dataset.
 
 ## 3. Reproduce training
 
-The commands below are deterministic single-node reference launches.
+The commands below are fixed-seed single-node reference launches.
 `--batch_size` is the **global** batch size, `--fix_random_seed` uses seed
 `666 + global rank`, and omitting `--use_amp` selects FP32. Training output is
 written to `output/<dataset_group>/rv_sdtm/<extra_tag>/`. Always use a unique
@@ -261,14 +281,17 @@ eight-GPU node, but a topology change can still alter the final weights.
 
 ### Resume or initialize a run
 
-Append `--ckpt /absolute/path/to/checkpoint_epoch_N.pth` to the matching
-training command to restore the model, optimizer, learning-rate scheduler,
-epoch, and iteration. `--epochs` remains the final total epoch count, not the
-number of extra epochs. Use
-`--pretrained_model /absolute/path/to/checkpoint.pth` for model-only
-initialization. New checkpoints produced by this release support full resume;
-compatibility notes for archived checkpoints are in
-[docs/RV_SDTM_RELEASE.md](docs/RV_SDTM_RELEASE.md).
+For checkpoints created by this release, append
+`--ckpt /absolute/path/to/checkpoint_epoch_N.pth` to restore the model,
+optimizer, learning-rate scheduler, epoch, and iteration. `--epochs` is the
+final total epoch count, not the number of extra epochs.
+
+Use `--pretrained_model /absolute/path/to/checkpoint.pth` for model-only
+initialization. The archived Waymo and nuScenes checkpoints require this
+option when starting training because their optimizer parameter groups differ
+from the released implementation. The archived AV2 checkpoint supports full
+resume. See [checkpoint compatibility](docs/RV_SDTM_RELEASE.md#4-historical-checkpoint-compatibility)
+for details.
 
 Keep `--skip_post_eval` in training commands and run the corresponding official
 evaluation below as a separate job.
@@ -332,13 +355,12 @@ remove `DATA_CONFIG.EVALUATE_RANGE: 200.0` or
 `DATA_CONFIG.EVAL_ONLY_ROI_INSTANCES: True` when comparing against the reported
 result.
 
-## Reproducibility checklist
+## Recording a reproduction
 
 For each reported run, retain the YAML copied into the output directory, the
 training/evaluation log, GPU count and model, global batch size, random seed,
 software versions, checkpoint SHA-256, and the complete metric output. These
-details distinguish a scientific reproduction from a successful code smoke
-test.
+details make results traceable to a specific model and evaluation protocol.
 
 `SOURCE_SHA256SUMS.txt` records the release source files (excluding itself).
 Verify a downloaded source tree with `sha256sum -c SOURCE_SHA256SUMS.txt`.

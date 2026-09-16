@@ -1,7 +1,9 @@
-# RV-SDTM release guide
+# Range–Voxel 3D Detection: release guide
 
-This document defines the reproducible public surface of RV-SDTM. It separates
-archived scientific evidence from corrected code intended for future training.
+This document records the released RV-SDTM protocols, archived results, and
+checkpoint compatibility. The repository is named Range–Voxel 3D Detection;
+the RV-SDTM method name and code identifiers are retained to match the
+experiment records.
 
 ## 1. Supported protocols
 
@@ -221,9 +223,9 @@ Use the corresponding `nuscenes_models/` or `argoverse_models/` config to train
 another dataset. `BATCH_SIZE_PER_GPU` is read from YAML unless a global
 `--batch_size` is supplied.
 
-The settings needed to match the archived AV2 run's precision and memory
-protocol are explicit below. `--batch_size` is global; omitting `--use_amp`
-keeps training in FP32.
+The AV2 reference recipe below preserves the archived global batch and memory
+settings. `--batch_size` is global; omitting `--use_amp` uses FP32 throughout.
+The archived run used AMP for epoch 1 and FP32 after its epoch-1 resume.
 
 ```bash
 (cd tools && bash scripts/dist_train.sh 8 \

@@ -1,5 +1,8 @@
 # Installation
 
+This guide covers the validated environment for Range–Voxel 3D Detection
+(RV-SDTM). Run installation commands from the cloned repository root.
+
 ## Recommended and validated stack
 
 Use the local A10-server stack that produced the archived AV2 result and passed
