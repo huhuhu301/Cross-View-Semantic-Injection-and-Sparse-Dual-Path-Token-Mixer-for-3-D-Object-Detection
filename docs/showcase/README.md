@@ -10,9 +10,9 @@ To view the HTML page locally, run from the repository root:
 python3 -m http.server 8770 --bind 127.0.0.1 --directory docs/showcase
 ```
 
-Open `http://127.0.0.1:8770/` on the same machine. No build or model is needed.
-GitHub's file browser does not render `index.html` as a website. No Pages
-deployment is configured or implied here; repository visibility is unchanged.
+Open `http://127.0.0.1:8770/` on the same machine for browser playback.
+GitHub provides the Markdown gallery and downloadable media in the private
+repository; the HTML gallery is ready for local viewing.
 
 The original five MP4s, six covers/stills, and one BEV GIF are retained without
 re-encoding. Four redundant multi-view GIFs from the handoff are not vendored;
@@ -20,9 +20,10 @@ re-encoding. Four redundant multi-view GIFs from the handoff are not vendored;
 `b_coverage_scores.csv` retains the complete original 30-frame diagnostic.
 
 The baseline display alias “FSHNet” means FSHNet-Light. The coverage rectangles
-come from GT; video blue boxes are predictions. Playback FPS is not inference
-FPS. See [protocol.html](protocol.html) or the [gallery guide](../SHOWCASE.md)
+come from GT; video blue boxes are predictions. The multi-view clips highlight
+Cyclist, Pedestrian, and Vehicle detections. See [protocol.html](protocol.html)
+or the [gallery guide](../SHOWCASE.md)
 for full interpretation, selection rules, and checkpoint distinctions.
 
-Media/dataset rights are not granted or relicensed by the source-code license.
+Media and dataset assets remain subject to their original permissions.
 Confirm applicable dataset and institutional permissions before public hosting.

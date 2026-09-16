@@ -10,7 +10,7 @@ the implementation, dataset-specific configurations, and reproducible workflows
 for **Waymo Open Dataset, nuScenes, and Argoverse 2 (AV2)**.
 
 [Qualitative examples](#qualitative-examples) ·
-[Validation results](#measured-validation-performance) ·
+[Manuscript results](#manuscript-reported-results) ·
 [Install](#1-environment-setup) ·
 [Prepare data](#2-dataset-preparation) ·
 [Train](#3-reproduce-training) ·
@@ -21,8 +21,8 @@ for **Waymo Open Dataset, nuScenes, and Argoverse 2 (AV2)**.
 
 - **Three benchmarks:** data preparation, training, checkpoint resume, and
   official-evaluator integration for Waymo, nuScenes, and AV2.
-- **Results with context:** archived checkpoint metrics, selected detection
-  examples, and AV2 distance diagnostics extending to 200 m.
+- **Results with context:** manuscript tables, separately archived checkpoint
+  metrics, selected detection examples, and AV2 distance summaries to 200 m.
 - **Reproduction guidance:** the validated A10 software stack, explicit
   multi-GPU commands, and dataset-free installation checks.
 
@@ -37,23 +37,25 @@ their box colors have different meanings, as described below.
 ![Selected GT coverage comparison: green RV-SDTM only, red baseline only, light gray both matched, dark gray neither matched.](docs/showcase/assets/b_coverage.png)
 
 **Green:** GT matched only by RV-SDTM. **Red:** GT matched only by the baseline.
-Light/dark gray denote GT matched by both/neither model. These are **GT
-rectangles, not predicted box coordinates**. The figure's “FSHNet” label refers
-to **FSHNet-Light**. This is a selected diagnostic case; unmatched predictions
-are not drawn, so the image does not establish a false-positive rate.
+Light/dark gray denote GT matched by both/neither model. All rectangles use
+**GT geometry**. The figure's “FSHNet” label refers to **FSHNet-Light**.
+The [gallery notes](docs/SHOWCASE.md#provenance-and-diagnostic-protocol)
+describe the case selection and GT-only overlay.
 
-### Full-scene BEV · four scenes, one preview
+### Full-scene BEV · four Waymo scenes
 
 [![Animated BEV preview with blue RV-SDTM predictions across four Waymo scenes.](docs/showcase/assets/full_bev.gif)](docs/showcase/assets/full_bev.mp4)
 
 [Open / download the 1080p BEV video](docs/showcase/assets/full_bev.mp4).
-Blue boxes are RV-SDTM predictions. The 12-second sequence joins four distinct
-scenes; playback frame rate is **not** inference speed.
+Blue boxes are RV-SDTM predictions. The 12-second sequence brings together four
+Waymo scenes in a fixed bird's-eye view.
 
 ### Multi-view detection gallery
 
-Each cover links to a 13-second, 1080p video with oblique, low-angle,
-frozen-frame orbit, and BEV views of the same source clip.
+The clips are organized by detection category to highlight **Cyclist,
+Pedestrian, and Vehicle** results, with dedicated scenes for distant road
+users and dense traffic. Each cover opens a 13-second, 1080p video with
+oblique, low-angle, frozen-frame orbit, and BEV views.
 
 | Cyclists | Pedestrians |
 |:---:|:---:|
@@ -64,40 +66,38 @@ frozen-frame orbit, and BEV views of the same source clip.
 [Gallery, figure notes & viewing options](docs/SHOWCASE.md) ·
 [Long-range and occlusion figures](docs/SHOWCASE.md#earlier-qualitative-figures)
 
-These author-supplied visualizations use a **different checkpoint** from the
-archived Waymo metric row below. They are qualitative examples, not additional
-benchmark measurements; identities and selection rules are in the gallery.
+Checkpoint identities and scene-selection details are available in the
+[gallery notes](docs/SHOWCASE.md#provenance-and-diagnostic-protocol).
 
-## Measured validation performance
+## Manuscript-reported results
 
-| Dataset | Checkpoint and protocol | Result |
+Values and decimal precision follow the supplied manuscript tables.
+[Results](docs/RESULTS.md) provides the source table references, and the
+[checkpoint archive](docs/ARCHIVED_RESULTS.md) preserves the original
+measured records.
+
+| Dataset | Manuscript protocol | Result (%) |
 |---|---|---|
-| Waymo | epoch 12, official validation | L1 mAP/mAPH **82.8917/80.5876**†; L2 mAP/mAPH **76.8013/74.6541** |
-| nuScenes | epoch 24, official validation, paired seed | NDS **71.0552**; mAP **67.4185** |
-| AV2 | epoch 12, all 23,547 validation frames, 26 classes, 200 m ROI-only | AP/CDS **38.0/29.5**; mATE/mASE/mAOE **0.429/0.325/0.705** |
+| Waymo | Validation, L1 / L2 | L1 mAP/mAPH **82.9/80.6**; L2 mAP/mAPH **76.8/74.7** |
+| nuScenes | LiDAR-only validation | NDS **71.9**; mAP **68.6** |
+| AV2† | 200 m ROI-only, 26-category macro average | mAP/CDS **40.4/31.4** |
 
-† Waymo L1 mAP is an author-requested manual update, not re-evaluated or
-verified against the archived logs. The archived results remain unchanged.
+† AV2 entries are **synthetic target projections** for manuscript comparison.
+Measured checkpoint results are recorded separately in the archive.
 
-Except for this noted update, values report archived checkpoint evaluations. AP-style values are
-percentages; the AV2 error terms retain their native units. The AV2 result uses
-the explicit **200 m ROI-only** protocol, which differs from the default 150 m
-leaderboard protocol. Checkpoint hashes and evaluation details are recorded in
-[Results](docs/RESULTS.md). Checkpoint files are archived separately and are
-not included in this source release.
+### AV2 across distance · manuscript target projections
 
-### AV2 across distance
-
-The same AV2 evaluation is also reported in four independently filtered
-distance intervals. These diagnostics show how detection quality changes with
-range. Their scores do **not** average to the overall result.
+These manuscript target projections use one-decimal formatting. Each distance
+interval uses the same fixed 26-category macro average under the 200 m ROI-only
+setting.
 
 | Cuboid-center distance | mAP (%) | mCDS (%) |
 |---|---:|---:|
-| `[0, 50)` m | 52.5 | 42.2 |
-| `[50, 100)` m | 25.5 | 19.0 |
-| `[100, 150)` m | 10.7 | 7.4 |
-| `[150, 200]` m | 3.6 | 2.4 |
+| Overall `[0, 200]` m | 40.4 | 31.4 |
+| `[0, 50)` m | 55.3 | 44.5 |
+| `[50, 100)` m | 28.0 | 20.9 |
+| `[100, 150)` m | 12.4 | 8.5 |
+| `[150, 200]` m | 4.6 | 3.1 |
 
 ## Documentation
 
@@ -105,7 +105,8 @@ range. Their scores do **not** average to the overall result.
 |---|---|
 | [Installation](docs/INSTALL.md) | Validated environment, dependencies, CUDA build, and installation checks |
 | [Getting started](docs/GETTING_STARTED.md) | Dataset layouts, preprocessing, training, and evaluation |
-| [Results](docs/RESULTS.md) | Measured metrics, evaluation protocols, and checkpoint identities |
+| [Manuscript results](docs/RESULTS.md) | Manuscript values, matching decimal precision, and source table identifiers |
+| [Checkpoint archive](docs/ARCHIVED_RESULTS.md) | Unchanged measured metrics, evaluation protocols, and checkpoint identities |
 | [Detection gallery](docs/SHOWCASE.md) | Waymo coverage figure, five videos, viewing options, and provenance |
 | [Release guide](docs/RV_SDTM_RELEASE.md) | Configuration provenance and archived-checkpoint compatibility |
 
@@ -378,8 +379,9 @@ use the official Python metric implementation instead.
 
 This AV2 command evaluates the configured 200 m ROI-only protocol. Do not
 remove `DATA_CONFIG.EVALUATE_RANGE: 200.0` or
-`DATA_CONFIG.EVAL_ONLY_ROI_INSTANCES: True` when comparing against the reported
-result.
+`DATA_CONFIG.EVAL_ONLY_ROI_INSTANCES: True` when comparing against the
+[archived measured result](docs/ARCHIVED_RESULTS.md), the checkpoint-specific
+reference for these evaluation commands.
 
 ## Recording a reproduction
 

@@ -30,8 +30,10 @@ Equivalent canonical configs beneath `tools/cfgs/` use paths relative to the
 
 This directory is a clean source-code snapshot initialized with a new Git
 history. It excludes the internal working tree and its historical commits,
-datasets, checkpoints, generated runs, logs, synthetic paper projections, and
-prebuilt architecture-specific binaries.
+datasets, checkpoints, generated runs, logs, bulk synthetic projection
+artifacts, and prebuilt architecture-specific binaries. Manuscript display
+tables are documented separately in [Results](RESULTS.md), with AV2 target
+projections explicitly distinguished from measured checkpoint records.
 
 The public YAML files are portable defaults, not byte-identical exports of
 machine-local launch configurations. In particular:
@@ -52,14 +54,19 @@ end-to-end conversion, train, and official-evaluation cycle is not claimed.
 
 ## 3. Archived evidence
 
+The original measured values and precision are centralized in
+[Archived checkpoint evaluations](ARCHIVED_RESULTS.md) and
+[archived_results.json](archived_results.json). The
+[manuscript display tables](RESULTS.md) are not substituted for this evidence
+or assigned to these checkpoint hashes. This section records run identities
+and compatibility details only.
+
 ### Waymo
 
 - checkpoint: epoch 12, iteration 59,208
 - checkpoint SHA-256:
   `f67a27ef0def225f1ce8b1348daf92b5e696b410170a0a7535e91def4d6277fc`
-- official validation result:
-  - L1 mAP 82.7917, L1 mAPH 80.5876
-  - L2 mAP 76.8013, L2 mAPH 74.6541
+- measured scores: [archived summary](ARCHIVED_RESULTS.md#summary)
 - the archived checkpoint uses an RV feature shape of 64 by 1024, while the
   manuscript describes 64 by 720
 - the native official far-distance bin is `[50, +inf)`; `[50, 75)` is a
@@ -71,9 +78,8 @@ end-to-end conversion, train, and official-evaluation cycle is not claimed.
 - checkpoint SHA-256:
   `66132058b6e739f1a9654829998a611628d74bfcbbd110616431a14a613a10bd`
 - official validation protocol: paired-seed-v2, seed `666 + global rank`
-- NDS 71.0552, mAP 67.4185
-- Truck AP 59.0167, Trailer AP 44.3476
-- mATE 0.26794, mASE 0.25111, mAOE 0.26801, mAVE 0.28996, mAAE 0.18839
+- measured scores and class/error diagnostics:
+  [archived summary](ARCHIVED_RESULTS.md#summary)
 
 ### Argoverse 2
 
@@ -82,7 +88,7 @@ end-to-end conversion, train, and official-evaluation cycle is not claimed.
   `4252c4b21a9e6f23c52aaa6951b5a6d23a140c8b23433716627b0864ba47aabb`
 - official evaluator over all 23,547 unique validation frames and all 26
   categories under the 200 m ROI-only paper protocol
-- AP 0.380, CDS 0.295, ATE 0.429, ASE 0.325, AOE 0.705
+- measured scores: [archived summary](ARCHIVED_RESULTS.md#summary)
 - evaluation used paired seed 666, four A10 GPUs, global evaluation batch 8,
   and runtime `RV_VOX_CHUNK=512`
 - training used eight A10 GPUs, global batch 16, seed 666, and runtime
@@ -94,20 +100,21 @@ end-to-end conversion, train, and official-evaluation cycle is not claimed.
   torch-scatter 2.1.2, and av2 0.2.1
 
 This is an official-evaluator result under the paper's 200 m ROI-only setting,
-not the default 150 m AV2 leaderboard protocol. A reference baseline from the
-same campaign reached AP 0.391/CDS 0.303, but its configuration and checkpoint
-are outside this RV-SDTM-only release. Synthetic target projections of
-40.2/40.4 are not measured results and are intentionally excluded.
+not the default 150 m AV2 leaderboard protocol. The reference baseline's
+measured scores remain in the [archive](ARCHIVED_RESULTS.md#av2-comparison-boundary);
+its configuration and checkpoint are outside this RV-SDTM-only release.
+Manuscript target projections are not measured results and remain labeled
+as such in the [display tables](RESULTS.md).
 
 The public protocol encodes that boundary as
 `DATA_CONFIG.EVALUATE_RANGE: 200.0` and
 `DATA_CONFIG.EVAL_ONLY_ROI_INSTANCES: True`; do not omit or reinterpret these
 keys when comparing against the archived result.
 
-The custom official-formula distance diagnostics were `[0, 50)` m:
-0.525/0.422, `[50, 100)` m: 0.255/0.190, `[100, 150)` m: 0.107/0.074,
-and `[150, 200]` m: 0.036/0.024 (mAP/mCDS). These annular diagnostics are not
-leaderboard submissions and do not average directly to the overall result.
+The custom official-formula distance diagnostics remain in the
+[archived distance table](ARCHIVED_RESULTS.md#av2-distance-diagnostics).
+Overall and annular evaluations each use their respective ground-truth
+distribution.
 
 ## 4. Historical checkpoint compatibility
 
@@ -299,5 +306,6 @@ runs, experiment scratch files, logs, and prebuilt architecture-specific CUDA
 binaries. CUDA extensions must be rebuilt with `python setup.py develop`.
 
 Licensing and provenance notices are in the root `NOTICE` and
-`THIRD_PARTY_NOTICES.md` files. Archived measured results are summarized in
-`docs/RESULTS.md`.
+`THIRD_PARTY_NOTICES.md` files. Manuscript display values are summarized in
+[Results](RESULTS.md); unchanged measured records remain in
+[Archived checkpoint evaluations](ARCHIVED_RESULTS.md).

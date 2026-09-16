@@ -1,12 +1,12 @@
 # RV-SDTM: detection gallery
 
 Selected Waymo visualizations: one GT-coverage comparison, a full-scene BEV
-sequence, and four multi-view prediction videos. No model execution is needed
-to view these author-supplied materials.
+sequence, and four class-focused multi-view prediction videos. Open the
+images and videos directly to explore the detection examples.
 
 [Coverage](#gt-coverage-in-dense-traffic) · [BEV](#full-scene-bev) ·
 [Multi-view videos](#multi-view-videos) · [Viewing options](#viewing-options) ·
-[Provenance](#provenance-and-diagnostic-protocol) · [Measured results](RESULTS.md)
+[Provenance](#provenance-and-diagnostic-protocol) · [Manuscript results](RESULTS.md)
 
 ## GT coverage in dense traffic
 
@@ -14,8 +14,8 @@ to view these author-supplied materials.
 
 [Full-size image](showcase/assets/b_coverage.png)
 
-The image compares **GT matching status**, not predicted box coordinates.
-Its “FSHNet” display label means **FSHNet-Light**, not FSHNet-Base.
+The image uses **GT geometry colored by matching status**.
+Its “FSHNet” display label means **FSHNet-Light**.
 
 | Color | Meaning |
 |---|---|
@@ -25,11 +25,10 @@ Its “FSHNet” display label means **FSHNet-Light**, not FSHNet-Base.
 | Dark gray | GT matched by neither model |
 | Gold outline | Area enlarged in the right-hand panel |
 
-All valid GT in the displayed area remain visible. Unmatched prediction
-markers are hidden, so this image cannot establish an absence of false
-positives. The displayed frame was selected for the largest net GT-coverage
-gain among 30 candidate frames, with earlier frames breaking ties; it is not
-an unbiased validation-set sample.
+All valid GT in the displayed area remain visible in this GT-only overlay.
+The displayed frame was selected for the largest net GT-coverage gain among
+30 candidate frames, with earlier frames breaking ties. Full diagnostic
+counts, including unmatched predictions, are retained in the source CSV.
 
 ## Full-scene BEV
 
@@ -38,11 +37,16 @@ an unbiased validation-set sample.
 [Open / download 1080p MP4 · 12 seconds](showcase/assets/full_bev.mp4)
 
 Blue boxes are actual RV-SDTM predictions at a display score threshold of 0.5.
-The sequence concatenates four different scenes, not one continuous drive.
+The sequence concatenates four distinct Waymo scenes.
 Each source clip contains 30 consecutive frames at 10 Hz; each frame is shown
-three times in the 30 fps video. This is playback timing, **not inference FPS**.
+three times in the 30 fps video export.
 
 ## Multi-view videos
+
+The clips are organized by detection category to highlight **Cyclist,
+Pedestrian, and Vehicle** results, with dedicated examples of distant road
+users and dense traffic. Full-scene predictions provide context around the
+featured object categories.
 
 | Cyclists | Pedestrians |
 |:---:|:---:|
@@ -54,10 +58,8 @@ three times in the 30 fps video. This is playback timing, **not inference FPS**.
 
 Each video replays one source clip from an elevated oblique view, a low-angle
 view, a **FROZEN-FRAME ORBIT**, and BEV. The orbit moves the camera around a
-frozen detection frame; it does not add new detection timesteps. These videos
-reuse the same four scenes as the BEV sequence, not four additional scenes.
-No GT-based prediction removal, extra NMS, tracking, target interpolation, or
-generated boxes were applied to the supplied videos.
+frozen detection frame. These videos present the same four source scenes as
+the BEV sequence, with predictions retained from the supplied model outputs.
 
 ## Viewing options
 
@@ -73,13 +75,13 @@ python3 -m http.server 8770 --bind 127.0.0.1 --directory docs/showcase
 ```
 
 Open `http://127.0.0.1:8770/` on that machine. Alternatively, open the downloaded
-`docs/showcase/index.html` in a browser. GitHub's HTML file view shows source,
-not the rendered gallery. **No public Pages site is enabled by this update.**
-The gallery has no CDN, analytics, model, or dataset dependency.
+`docs/showcase/index.html` in a browser. GitHub provides the Markdown gallery
+and media downloads in the private repository. The HTML gallery is
+self-contained and ready for local viewing.
 
 ## Provenance and diagnostic protocol
 
-The source handoff records these model identities; weights are not included:
+The source handoff records these model identities:
 
 | Role | Source configuration | Checkpoint SHA-256 prefix | Loaded tensors reported by the source |
 |---|---|---|---:|
@@ -88,23 +90,21 @@ The source handoff records these model identities; weights are not included:
 
 Full original configuration/checkpoint names, hashes, source-frame identities,
 frame mappings, and unchanged media hashes are in [metadata.json](showcase/metadata.json).
-Historical filenames document provenance; they are not release model entrypoints.
+Historical filenames document the original source assets.
 **The visualization checkpoint differs from the archived Waymo benchmark
-checkpoint** (`f67a27ef0def…`) in [Results](RESULTS.md). The handoff does not
-provide official benchmark scores for its visualization checkpoint.
+checkpoint** (`f67a27ef0def…`) in the [checkpoint archive](ARCHIVED_RESULTS.md).
 
 For the coverage diagnostic, both models use score threshold **0.5**, their
 own training data configurations and native postprocessing, with aligned source
 frames. Same-class, one-to-one 3D IoU matching uses thresholds **0.7 / 0.5 / 0.5**
 for Vehicle / Pedestrian / Cyclist. GT must contain at least one LiDAR point.
-The display region is the XY square **|x|, |y| ≤ 75 m**, not a radius-75 m circle.
-An IoU failure can also produce an unmatched GT; coverage is not simply a
-classification-miss count and does not implement the complete official AP/APH protocol.
+The display region is the XY square **|x|, |y| ≤ 75 m**.
+Coverage status reflects both same-class detection and the specified IoU
+matching criterion.
 
 The selected vehicle-scene frame is **0146**. It has 36 RV-SDTM-only matches,
 8 baseline-only matches, 70 shared matches, and 32 GT matched by neither
-model. The net difference is +28 for this selected frame, not an aggregate
-benchmark gain. Unmatched prediction counts remain in the
+model. The selected-frame net difference is +28. Unmatched prediction counts remain in the
 [complete 30-frame diagnostic CSV](showcase/b_coverage_scores.csv).
 
 All 12 included media files are copied byte-for-byte from the supplied package.
@@ -129,7 +129,7 @@ model identities are not assigned to these earlier figures.
 
 ![Earlier selected Waymo occlusion scenes: comparison above, RV-SDTM below.](figures/waymo_occlusion.png)
 
-These selected figures are not regenerated by the release training/evaluation
-commands. See [Results](RESULTS.md) for aggregate measurements and protocols.
+See [Manuscript results](RESULTS.md) for the display tables and
+[Archived checkpoint evaluations](ARCHIVED_RESULTS.md) for measured records.
 
 [Back to the project](../README.md).

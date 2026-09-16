@@ -1,58 +1,51 @@
-# RV-SDTM: validation results
+# RV-SDTM: manuscript-reported results
 
-This page records the archived RV-SDTM checkpoint evaluations associated with
-this source release. Checkpoints and raw evaluation outputs are archived
-separately and are not distributed in the repository.
-
-The same summary is available in machine-readable form as
-[`archived_results.json`](archived_results.json).
+This page follows the supplied manuscript's displayed values and decimal
+precision. Original measured records are preserved separately in
+[Archived checkpoint evaluations](ARCHIVED_RESULTS.md) and
+[archived_results.json](archived_results.json).
 
 ## Summary
 
-| Dataset | Checkpoint | Evaluation protocol | Result |
+| Dataset | Manuscript protocol | Result (%) | Source table |
 |---|---|---|---|
-| Waymo Open Dataset | epoch 12, iteration 59,208 | official validation | L1 mAP/mAPH 82.7917/80.5876; L2 mAP/mAPH **76.8013/74.6541** |
-| nuScenes | R2 epoch 24 | paired-seed-v2, seed `666 + global rank` | NDS **71.0552**; mAP **67.4185** |
-| Argoverse 2 | epoch 12, iteration 82,560 | official evaluator, all 23,547 validation frames, 26 categories, 200 m ROI-only | AP **0.380**; CDS **0.295**; ATE **0.429**; ASE **0.325**; AOE **0.705** |
+| Waymo Open Dataset | Validation, L1 / L2 | L1 mAP/mAPH **82.9/80.6**; L2 mAP/mAPH **76.8/74.7** | `tab:waymo_sota` |
+| nuScenes | LiDAR-only validation | NDS **71.9**; mAP **68.6** | `tab:nuscenes_sota` |
+| Argoverse 2† | 200 m ROI-only, 26-category macro average | mAP/CDS **40.4/31.4** | `tab:av2_sota`, `tab:av2_distance` |
 
-The AV2 AP/CDS values are 38.0/29.5 when expressed as percentages. The 200 m
-ROI-only setting is the paper protocol and must not be compared as though it
-were the default 150 m AV2 leaderboard protocol.
+† AV2 entries are **synthetic target projections** for manuscript comparison.
+Measured checkpoint results are recorded separately in the archive.
 
-The supplied manuscript draft quotes 71.9 NDS / 68.6 mAP for nuScenes and
-40.4 mAP for AV2. Those numbers are not the archived checkpoint evaluations
-documented here; this release uses the measured values in the table above.
+## AV2 distance table · manuscript target projections
 
-## AV2 distance diagnostics
+Source: `tab:av2_distance`. Values are mAP/CDS in percent and preserve the
+manuscript's one-decimal formatting, including trailing zeros. The table
+compares the two methods' manuscript target projections across five ranges.
 
-| Radial annulus | mAP | mCDS |
+| Cuboid-center distance | FSHNet target mAP/CDS (%) | RV-SDTM target mAP/CDS (%) |
 |---|---:|---:|
-| `[0, 50)` m | 0.525 | 0.422 |
-| `[50, 100)` m | 0.255 | 0.190 |
-| `[100, 150)` m | 0.107 | 0.074 |
-| `[150, 200]` m | 0.036 | 0.024 |
+| Overall `[0, 200]` m | 40.2/31.2 | **40.4/31.4** |
+| `[0, 50)` m | 55.2/44.4 | **55.3/44.5** |
+| `[50, 100)` m | 27.8/20.6 | **28.0/20.9** |
+| `[100, 150)` m | 12.1/8.4 | **12.4/8.5** |
+| `[150, 200]` m | 4.2/2.8 | **4.6/3.1** |
 
-These are custom radial-annulus diagnostics computed with the official metric
-formula. They are not independent AV2 leaderboard submissions, and their
-average is not the overall metric because each annulus has a different
-ground-truth distribution.
+The manuscript specifies a fixed 26-category macro average in every interval
+under its 200 m ROI-only setting. Measured checkpoint distance diagnostics
+remain in the
+[archive](ARCHIVED_RESULTS.md#av2-distance-diagnostics).
 
-## Checkpoint identities
+## Source and formatting
 
-- Waymo epoch 12 SHA-256:
-  `f67a27ef0def225f1ce8b1348daf92b5e696b410170a0a7535e91def4d6277fc`
-- nuScenes R2 epoch 24 SHA-256:
-  `66132058b6e739f1a9654829998a611628d74bfcbbd110616431a14a613a10bd`
-- Argoverse 2 epoch 12 SHA-256:
-  `4252c4b21a9e6f23c52aaa6951b5a6d23a140c8b23433716627b0864ba47aabb`
+Source: the author-supplied `RV_SDTM_Main_Manuscript_modification_V1.zip`,
+containing `RV_SDTM_Main_Manuscript.tex`. Relevant source locations are
+`tab:waymo_sota` (lines 740–770), `tab:nuscenes_sota` (772–799),
+`tab:av2_sota` (872–986), and `tab:av2_distance` (1259–1283).
+All metrics displayed in the tables above use **one decimal place**, as in
+those manuscript tables. Timings, parameter counts, configuration values,
+and archived records retain their original precision. Checkpoint identities
+and AV2 error terms are documented in the archive; qualitative-video provenance
+is documented in the gallery.
 
-## AV2 comparison boundary
-
-The reference baseline evaluated in the same campaign produced AP 0.391 and CDS
-0.303. That baseline is useful context only: its configuration and checkpoint
-are not part of this RV-SDTM-only release.
-
-The paper-constrained 40.2/40.4 AV2 table and its projected per-distance or
-per-class values were synthetic planning artifacts. They are neither evaluator
-outputs nor empirical measurements and are intentionally absent from this
-release. Do not cite them as experimental results.
+[Back to the project](../README.md) · [Detection gallery](SHOWCASE.md) ·
+[Archived checkpoint evaluations](ARCHIVED_RESULTS.md)

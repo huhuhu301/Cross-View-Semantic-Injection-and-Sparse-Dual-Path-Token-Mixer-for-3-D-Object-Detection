@@ -160,8 +160,10 @@ size 8, seed 666, and the same runtime chunk override:
 This evaluates the configured 200 m ROI-only paper protocol. It is not the
 default 150 m AV2 leaderboard protocol. The canonical config makes this
 explicit with `DATA_CONFIG.EVALUATE_RANGE: 200.0` and
-`DATA_CONFIG.EVAL_ONLY_ROI_INSTANCES: True`. See [RESULTS.md](RESULTS.md) for
-the measured metrics and checkpoint SHA-256.
+`DATA_CONFIG.EVAL_ONLY_ROI_INSTANCES: True`. See
+[Archived checkpoint evaluations](ARCHIVED_RESULTS.md) for the measured
+metrics and checkpoint SHA-256; the [manuscript tables](RESULTS.md) use a
+separate reporting scope.
 
 ## Dataset-free verification
 
