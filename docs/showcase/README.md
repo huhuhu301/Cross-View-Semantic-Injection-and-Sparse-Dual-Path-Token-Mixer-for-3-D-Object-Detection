@@ -11,7 +11,7 @@ python3 -m http.server 8770 --bind 127.0.0.1 --directory docs/showcase
 ```
 
 Open `http://127.0.0.1:8770/` on the same machine for browser playback.
-GitHub provides the Markdown gallery and downloadable media in the private
+GitHub provides the Markdown gallery and downloadable media in the
 repository; the HTML gallery is ready for local viewing.
 
 The original five MP4s, six covers/stills, and one BEV GIF are retained without

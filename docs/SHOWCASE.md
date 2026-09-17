@@ -65,7 +65,7 @@ the BEV sequence, with predictions retained from the supplied model outputs.
 
 On GitHub, the GIF and cover images are visible directly in Markdown. Click a
 cover or MP4 link to open the asset; if a player is unavailable, download the
-original file. Repository access is required while this project is private.
+original file.
 
 A self-contained, responsive HTML gallery with five video players is included
 in [showcase/](showcase/README.md). After cloning, run from the repository root:
@@ -76,7 +76,7 @@ python3 -m http.server 8770 --bind 127.0.0.1 --directory docs/showcase
 
 Open `http://127.0.0.1:8770/` on that machine. Alternatively, open the downloaded
 `docs/showcase/index.html` in a browser. GitHub provides the Markdown gallery
-and media downloads in the private repository. The HTML gallery is
+and media downloads in the repository. The HTML gallery is
 self-contained and ready for local viewing.
 
 ## Provenance and diagnostic protocol
