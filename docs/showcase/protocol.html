@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Interpretation &amp; provenance | RV-SDTM</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body><main class="notes">
+  <a href="index.html">← Back to the gallery</a>
+  <h1>Interpretation &amp; provenance</h1>
+  <h2>Models and scope</h2>
+  <p>These Waymo visualizations compare RV-SDTM and FSHNet predictions on selected scenes.</p>
+  <h2 id="coverage">GT-coverage diagnostic</h2>
+  <p>Green rectangles are GT matched only by RV-SDTM, red only by FSHNet, light gray by
+    both, and dark gray by neither. All valid GT in the display area remain visible. Rectangles
+    use <strong>GT geometry</strong>. The gold outline locates the right-hand detail panel.
+    The overlay shows GT boxes; complete diagnostic counts, including unmatched predictions,
+    are retained in the CSV.</p>
+  <p>Both models use display score threshold 0.5, their own training data configurations,
+    and native postprocessing, aligned by frame. Same-class one-to-one 3D IoU matching uses
+    Vehicle / Pedestrian / Cyclist thresholds 0.7 / 0.5 / 0.5. GT must have at least one LiDAR
+    point. The display area is the XY square |x|, |y| ≤ 75 m.
+    Coverage status reflects both same-class detection and the specified IoU matching criterion.</p>
+  <p>The displayed vehicle-scene frame 0146 maximizes RV-SDTM-only minus baseline-only
+    GT matches over 30 candidate frames, with earlier frames breaking ties. Counts are
+    36 RV-SDTM-only, 8 baseline-only, 70 both, and 32 neither: a selected-frame net difference
+    of +28. The <a href="b_coverage_scores.csv">complete diagnostic CSV</a>
+    retains all 30 frames, including unmatched prediction counts.</p>
+  <h2>Prediction videos and timing</h2>
+  <p>Blue boxes are RV-SDTM predictions at score threshold 0.5, retained from the model's
+    native postprocessing. Class-focused clips highlight Cyclist, Pedestrian, and Vehicle
+    detections across distant-road-user and dense-traffic scenes.</p>
+  <p>Each of the four scenes contains 30 consecutive source frames at 10 Hz. The 12-second
+    BEV video joins the four distinct scenes with a fixed bird's-eye camera; each source frame
+    is repeated three times in a 30 fps video export. Cuts separate the four source scenes.</p>
+  <p>Each 13-second multi-view video presents the same source clip as an elevated oblique
+    view, low-angle replay, final-frame camera orbit, and BEV replay. <strong>FROZEN-FRAME ORBIT</strong>
+    marks a stationary detection frame with camera movement. The multi-view and BEV videos
+    share the same four scenes.</p>
+  <h2>Files and use</h2>
+  <p>The 12 original media files are byte-identical to the source handoff: five MP4s, six
+    covers/stills, and a BEV GIF. Four additional 480×270 GIF previews are derived from the
+    original multi-view MP4s. Original predictions and
+    diagnostic counts are unchanged.</p>
+  <p>The gallery is available on GitHub Pages and for local viewing. Media and
+    dataset assets remain subject to their original permissions; confirm applicable dataset
+    and institutional permissions before public hosting.</p>
+  <p><a href="index.html">Return to the gallery</a> ·
+    <a href="b_coverage_scores.csv">Complete diagnostic CSV</a></p>
+</main></body>
+</html>

@@ -1,0 +1,28 @@
+# Modified by RV-SDTM contributors for this public release; see NOTICE.
+name: Source checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  release-hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+      - name: Scan tracked release files
+        run: python tools/check_release_hygiene.py
+      - name: Compile Python sources
+        run: python -m compileall -q pcdet tools
+      - name: Validate public configuration contracts
+        run: |
+          python -m pip install easydict==1.13 PyYAML==6.0.2
+          python tools/validate_rv_sdtm_release.py

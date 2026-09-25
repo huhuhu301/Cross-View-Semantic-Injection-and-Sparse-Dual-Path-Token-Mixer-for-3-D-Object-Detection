@@ -1,0 +1,58 @@
+# Modified by RV-SDTM contributors for this public release; see NOTICE.
+name: Publish detection gallery
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/showcase/**'
+      - '.github/workflows/gallery-pages.yml'
+      - 'tools/check_release_hygiene.py'
+      - 'tools/check_gallery_playback.cjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gallery-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Check release files
+        run: python3 tools/check_release_hygiene.py
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload gallery only
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs/showcase
+      - name: Deploy gallery
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Set up browser check runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser check dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/gallery-browser" --no-package-lock --no-audit --no-fund playwright@1.63.0
+          "$RUNNER_TEMP/gallery-browser/node_modules/.bin/playwright" install --with-deps chromium --only-shell
+      - name: Verify published video playback
+        env:
+          GALLERY_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          NODE_PATH="$RUNNER_TEMP/gallery-browser/node_modules" node tools/check_gallery_playback.cjs "$GALLERY_URL"

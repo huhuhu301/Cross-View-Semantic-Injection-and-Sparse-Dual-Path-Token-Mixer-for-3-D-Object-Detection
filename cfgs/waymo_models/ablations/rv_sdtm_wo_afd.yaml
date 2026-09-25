@@ -1,0 +1,5 @@
+# Modified by RV-SDTM contributors for this public release; see NOTICE.
+_BASE_CONFIG_: cfgs/waymo_models/rv_sdtm.yaml
+MODEL:
+    BACKBONE_3D:
+        AFD: False
