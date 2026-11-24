@@ -97,6 +97,11 @@ Argoverse 2, with dataset-specific evaluation settings summarized below.
 
 [Evaluation details](docs/RESULTS.md)
 
+**KITTI component study.** On 3,769 validation frames, adding RV-GeoCVA and SDTM
+to CT3D raised the three-class mean Moderate 3D AP<sub>R40</sub> from **69.91%**
+to **73.28%** (+3.37 percentage points).
+[Full KITTI results for all nine configurations](docs/KITTI.md#validation-results)
+
 ## Configurations
 
 | Dataset | Configuration | Backbone | Detection head | Epochs |
