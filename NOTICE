@@ -7,6 +7,8 @@ copyrights and attribution rights.
 
 Parts of the included KITTI evaluation implementation are provided under the
 MIT License; see pcdet/datasets/kitti/kitti_object_eval_python/LICENSE.
+For KITTI detector component attributions and license terms, see
+THIRD_PARTY_NOTICES.md and licenses/CT3D-MIT.txt.
 
 The distributed-training initialization helper in pcdet/utils/common_utils.py
 is adapted from MMDetection/OpenMMLab and retains its source-level attribution.

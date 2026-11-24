@@ -1,7 +1,8 @@
 # Getting started
 
 This guide covers dataset preparation, training and evaluation for Waymo,
-nuScenes and Argoverse 2. Module definitions and Waymo ablation configurations
+nuScenes and Argoverse 2. For KITTI data, training budgets and validation, see
+the [KITTI guide](KITTI.md). Module definitions and Waymo ablation configurations
 are described in the [implementation guide](RV_SDTM_RELEASE.md).
 
 ## Canonical configurations
@@ -13,6 +14,7 @@ Use these paths from the repository root:
 | Waymo Open Dataset | `cfgs/waymo_models/rv_sdtm.yaml` |
 | nuScenes | `cfgs/nuscenes_models/rv_sdtm.yaml` |
 | Argoverse 2 | `cfgs/argoverse_models/rv_sdtm.yaml` |
+| KITTI | [cfgs/kitti_models/kitti_rv_geocva_sdtm.yaml](../cfgs/kitti_models/kitti_rv_geocva_sdtm.yaml) |
 
 The matching files under `tools/cfgs/` are for commands launched from the
 `tools/` directory. Always pass an explicit configuration path.

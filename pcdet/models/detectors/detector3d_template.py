@@ -177,7 +177,7 @@ class Detector3DTemplate(nn.Module):
     def forward(self, **kwargs):
         raise NotImplementedError
 
-    def post_processing(self, batch_dict):
+    def post_processing(self, batch_dict, recall_after_nms=False):
         """
         Args:
             batch_dict:
@@ -271,7 +271,7 @@ class Detector3DTemplate(nn.Module):
                 final_boxes = box_preds[selected]
 
             recall_dict = self.generate_recall_record(
-                box_preds=final_boxes if 'rois' not in batch_dict else src_box_preds,
+                box_preds=final_boxes if recall_after_nms or 'rois' not in batch_dict else src_box_preds,
                 recall_dict=recall_dict, batch_index=index, data_dict=batch_dict,
                 thresh_list=post_process_cfg.RECALL_THRESH_LIST
             )

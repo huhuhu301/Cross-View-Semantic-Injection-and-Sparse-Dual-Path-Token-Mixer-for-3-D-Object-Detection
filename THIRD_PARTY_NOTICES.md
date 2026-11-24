@@ -20,6 +20,12 @@ This file is attribution information, not a replacement for those licenses.
 - **KITTI object evaluation Python code** is bundled beneath
   `pcdet/datasets/kitti/kitti_object_eval_python/` under the MIT License stored
   in that directory.
+- The KITTI reference transformer detector includes [CT3D](https://github.com/hlsheng1/CT3D)
+  source under the [MIT license](licenses/CT3D-MIT.txt). The three-stage proposal
+  mask, RoI refinement and cascade targets/losses adapt the
+  [upstream cascade implementation](https://github.com/hailanyi/CasA) (Apache-2.0).
+  The range-view classification and sparse token-mixing modules are separate
+  additions. OpenPCDet PointNet++ kernels retain their original source notices.
 
 ## External dependencies and datasets
 
@@ -27,7 +33,7 @@ PyTorch, spconv, torch-scatter, NumPy, SciPy, the Waymo Open Dataset package,
 the nuScenes devkit, and the Argoverse 2 API are installed separately and are
 not vendored by this repository. Each is governed by its own license.
 
-Waymo Open Dataset, nuScenes, and Argoverse 2 data, annotations, evaluation
+KITTI, Waymo Open Dataset, nuScenes, and Argoverse 2 data, annotations, evaluation
 assets, and checkpoints are not redistributed. Users must obtain them from the
 respective owners and comply with their dataset terms. Dataset and project
 names remain trademarks of their respective owners; their mention does not

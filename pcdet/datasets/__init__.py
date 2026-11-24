@@ -13,12 +13,14 @@ from .dataset import DatasetTemplate
 
 __all__ = {
     'DatasetTemplate': DatasetTemplate,
+    'KittiDataset': None,
     'NuScenesDataset': None,
     'WaymoDataset': None,
     'Argo2Dataset': None,
 }
 
 _DATASET_IMPORTS = {
+    'KittiDataset': ('.kitti.kitti_dataset', 'KittiDataset'),
     'NuScenesDataset': ('.nuscenes.nuscenes_dataset', 'NuScenesDataset'),
     'WaymoDataset': ('.waymo.waymo_dataset', 'WaymoDataset'),
     'Argo2Dataset': ('.argo2.argo2_dataset', 'Argo2Dataset'),

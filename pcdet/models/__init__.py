@@ -4,8 +4,6 @@ from collections import namedtuple
 import numpy as np
 import torch
 
-from .detectors import build_detector
-
 try:
     import kornia
 except:
@@ -14,11 +12,17 @@ except:
 
 
 
+def build_detector(model_cfg, num_class, dataset):
+    from ..utils import sparse_index_policy
+    policy = model_cfg.get('SPCONV_DIRECT_TABLE')
+    if policy is not None or sparse_index_policy.use_direct_table:
+        sparse_index_policy.select(bool(policy))
+    from .detectors import build_detector as build
+    return build(model_cfg=model_cfg, num_class=num_class, dataset=dataset)
+
+
 def build_network(model_cfg, num_class, dataset):
-    model = build_detector(
-        model_cfg=model_cfg, num_class=num_class, dataset=dataset
-    )
-    return model
+    return build_detector(model_cfg, num_class, dataset)
 
 
 def load_data_to_gpu(batch_dict):

@@ -26,3 +26,4 @@ jobs:
         run: |
           python -m pip install easydict==1.13 PyYAML==6.0.2
           python tools/validate_rv_sdtm_release.py
+          python tools/check_kitti_configs.py

@@ -41,7 +41,9 @@ def build_optimizer(model, optim_cfg):
         )
     elif optim_cfg.OPTIMIZER in ['adam_onecycle','adam_cosineanneal']:
         get_layer_groups = lambda m: [
-            nn.Sequential(*_flatten_model_with_direct_parameters(m))
+            nn.Sequential(*([layer for layer in m.modules() if not list(layer.children())]
+                            if optim_cfg.get('LEAF_MODULE_GROUPS', False)
+                            else _flatten_model_with_direct_parameters(m)))
         ]
         betas = optim_cfg.get('BETAS', (0.9, 0.99))
         betas = tuple(betas)

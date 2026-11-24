@@ -2,13 +2,10 @@
 from typing import Set
 
 import spconv
-if float(spconv.__version__[2:]) >= 2.2:
-    spconv.constants.SPCONV_USE_DIRECT_TABLE = False
+from . import sparse_index_policy
+if hasattr(spconv.constants, 'SPCONV_USE_DIRECT_TABLE'):
+    spconv.constants.SPCONV_USE_DIRECT_TABLE = sparse_index_policy.use_direct_table
 
-# try:
-#     import spconv.pytorch as spconv
-# except:
-#     import spconv as spconv
 import spconv.pytorch as spconv
 import torch.nn as nn
 

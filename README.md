@@ -18,8 +18,8 @@ for **Waymo Open Dataset, nuScenes, and Argoverse 2 (AV2)**.
 
 ### What is included
 
-- **Three benchmarks:** data preparation, training, checkpoint resume, and
-  official-evaluator integration for Waymo, nuScenes, and AV2.
+- **Dataset support:** data preparation, training and evaluation for Waymo,
+  nuScenes, AV2, and [KITTI](docs/KITTI.md).
 - **Results and visualizations:** three-dataset result summaries and
   selected detection examples.
 - **Reproduction guidance:** the validated A10 software stack, explicit
@@ -104,6 +104,10 @@ Argoverse 2, with dataset-specific evaluation settings summarized below.
 | Waymo | [cfgs/waymo_models/rv_sdtm.yaml](cfgs/waymo_models/rv_sdtm.yaml) | `RVSDTM` | `SparseDynamicHead` | 12 |
 | nuScenes | [cfgs/nuscenes_models/rv_sdtm.yaml](cfgs/nuscenes_models/rv_sdtm.yaml) | `RVSDTMNuScenes` | `TransFusionHead` | 24 |
 | AV2 | [cfgs/argoverse_models/rv_sdtm.yaml](cfgs/argoverse_models/rv_sdtm.yaml) | `RVSDTMAV2` | `SparseDynamicHead` | 12 |
+| KITTI | [cfgs/kitti_models/kitti_rv_geocva_sdtm.yaml](cfgs/kitti_models/kitti_rv_geocva_sdtm.yaml) | Sparse voxel backbone + SDTM | Three-stage RoI refinement + GeoCVA | 100 |
+
+The [KITTI configurations](cfgs/kitti_models) include GeoCVA only, SDTM only,
+their combination, and five reference detectors. Each YAML can be used directly.
 
 Use the paths above for commands launched from the repository root. The
 matching `tools/cfgs/` paths are used by distributed launchers executed inside
@@ -149,10 +153,10 @@ If several CUDA toolkits are installed, set `CUDA_HOME` to the CUDA 11.3
 installation before building and confirm the selection with `nvcc --version`.
 `torchaudio` is not required by RV-SDTM and is intentionally omitted.
 
-`requirements.txt` installs dependencies for all three datasets. For a smaller
-single-dataset environment, install `requirements-core.txt` followed by one of
-`requirements-waymo.txt`, `requirements-nuscenes.txt`, or
-`requirements-av2.txt` before running `python setup.py develop`.
+For KITTI training, install `requirements-core.txt` and build the CUDA
+extensions. For the other datasets, add `requirements-waymo.txt`,
+`requirements-nuscenes.txt`, or `requirements-av2.txt` as needed.
+The [KITTI guide](docs/KITTI.md) includes the validation metric environment.
 
 Verify the installation without downloading a dataset:
 
@@ -239,6 +243,17 @@ training/evaluation command. If a command already has `--set`, append the data
 path key/value to that same final list. `--root_dir` does not redirect a
 dataset.
 
+### KITTI
+
+Place the labeled object-detection data, road planes and split lists in
+`data/kitti/` as shown in the [KITTI data guide](docs/KITTI.md#data-preparation).
+Build the infos and ground-truth database once, from the repository root:
+
+```bash
+python -m pcdet.datasets.kitti.kitti_dataset create_kitti_infos \
+    --cfg_file cfgs/dataset_configs/kitti_dataset.yaml --data_path data/kitti
+```
+
 ## 3. Reproduce training
 
 The commands below are fixed-seed single-node reference launches.
@@ -315,6 +330,22 @@ requires matching optimizer parameter groups. See
 Keep `--skip_post_eval` in training commands and run the corresponding official
 evaluation below as a separate job.
 
+### KITTI training
+
+Train the combined model on four GPUs (one frame per GPU, FP32):
+
+```bash
+(cd tools && bash scripts/dist_train.sh 4 \
+    --cfg_file cfgs/kitti_models/kitti_rv_geocva_sdtm.yaml \
+    --batch_size 4 --epochs 100 --workers 2 \
+    --fix_random_seed --seed 666 --skip_post_eval \
+    --extra_tag kitti_s666)
+```
+
+For a single-module run, change only the YAML to `kitti_rv_geocva.yaml` or
+`kitti_sdtm.yaml` in the same directory. See the [KITTI configuration table](docs/KITTI.md#configurations)
+for the batch sizes and training lengths of the reference detectors.
+
 ## 4. Official evaluation
 
 During evaluation, the learned Router uses its entire budget for top-score
@@ -372,6 +403,23 @@ use the official Python metric implementation instead.
 This AV2 command evaluates the configured 200 m ROI-only protocol. Do not
 remove `DATA_CONFIG.EVALUATE_RANGE: 200.0` or
 `DATA_CONFIG.EVAL_ONLY_ROI_INSTANCES: True` when evaluating under this protocol.
+
+### KITTI validation
+
+Evaluate the fixed epoch-100 checkpoint on the 3,769-frame validation split.
+The KITTI evaluator reports AP_R40 for Car, Pedestrian and Cyclist at Easy,
+Moderate and Hard difficulty. Set up the [metric interpreter](docs/KITTI.md#validation-metric)
+before launching:
+
+```bash
+(cd tools && bash scripts/dist_test.sh 4 \
+    --cfg_file cfgs/kitti_models/kitti_rv_geocva_sdtm.yaml \
+    --ckpt ../output/kitti_models/kitti_rv_geocva_sdtm/kitti_s666/ckpt/checkpoint_epoch_100.pth \
+    --batch_size 8 --workers 2 \
+    --fix_random_seed --eval_seed 666 \
+    --eval_tag official_kitti_val --root_dir .. \
+    --output_dir ../output/kitti_rv_sdtm_eval)
+```
 
 ## Recording a reproduction
 
