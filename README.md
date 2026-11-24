@@ -86,21 +86,17 @@ and blue dashed outlines highlight selected objects.
 
 ## Results
 
-RV-SDTM supports LiDAR-based 3D object detection on Waymo, nuScenes, and
-Argoverse 2, with dataset-specific evaluation settings summarized below.
+We evaluate RV-SDTM on Waymo, nuScenes, and Argoverse 2. On KITTI, we evaluate
+its RV-GeoCVA and SDTM components in CT3D.
 
 | Dataset | Evaluation setting | Result (%) |
 |---|---|---|
 | Waymo | Validation, L1 / L2 | L1 mAP/mAPH **82.9/80.6**; L2 mAP/mAPH **76.8/74.7** |
 | nuScenes | LiDAR-only validation | NDS **71.9**; mAP **68.6** |
 | Argoverse 2 | Validation, 26 classes, 200 m, ROI-only | mAP **40.4** |
+| KITTI | CT3D component study on 3,769 validation frames | Three-class mean Moderate 3D AP<sub>R40</sub><br>CT3D **69.91** → **73.28** with RV-GeoCVA + SDTM (+3.37 pp) |
 
-[Evaluation details](docs/RESULTS.md)
-
-**KITTI component study.** On 3,769 validation frames, adding RV-GeoCVA and SDTM
-to CT3D raised the three-class mean Moderate 3D AP<sub>R40</sub> from **69.91%**
-to **73.28%** (+3.37 percentage points).
-[Full KITTI results for all nine configurations](docs/KITTI.md#validation-results)
+[Evaluation details](docs/RESULTS.md) · [Full KITTI results for all nine configurations](https://github.com/huhuhu301/Cross-View-Semantic-Injection-and-Sparse-Dual-Path-Token-Mixer-for-3-D-Object-Detection/blob/main/docs/KITTI.md#validation-results)
 
 ## Configurations
 
