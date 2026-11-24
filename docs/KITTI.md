@@ -5,6 +5,29 @@ The combined model applies sparse dual-path token mixing to the fourth voxel
 stage and uses range-view attention in each of three RoI classification stages.
 The RoI box regressor keeps its original features.
 
+## Validation results
+
+The table reports 3D AP_R40 (%) on 3,769 KITTI validation frames. Each class
+column lists Easy / Moderate / Hard scores. Mean Moderate is the unweighted
+mean of the three Moderate class scores. All nine runs used training seed 666.
+
+| Detector | Epochs | Car (E / M / H) | Pedestrian (E / M / H) | Cyclist (E / M / H) | Mean Moderate (%) |
+|---|---:|---:|---:|---:|---:|
+| CT3D (baseline) | 100 | 91.35 / 82.43 / 81.90 | 62.05 / 56.34 / 51.65 | 88.14 / 70.96 / 66.33 | 69.91 |
+| CT3D + RV-GeoCVA (B) | 100 | 91.66 / 83.29 / 83.32 | 68.22 / 62.07 / 56.56 | 90.91 / 73.40 / 69.11 | 72.92 |
+| CT3D + SDTM (C) | 100 | 92.36 / 83.79 / 83.53 | 68.41 / 62.18 / 56.29 | 90.34 / 69.25 / 68.87 | 71.74 |
+| CT3D + RV-GeoCVA + SDTM (D) | 100 | 92.57 / 83.64 / 83.47 | 68.67 / 62.59 / 57.07 | 92.03 / 73.61 / 69.44 | 73.28 |
+| PointPillars | 80 | 87.71 / 78.46 / 75.56 | 53.38 / 47.95 / 43.65 | 82.10 / 64.25 / 60.08 | 63.55 |
+| SECOND | 80 | 89.79 / 81.12 / 77.98 | 55.23 / 49.27 / 45.17 | 85.62 / 68.17 / 64.21 | 66.19 |
+| PointRCNN | 80 | 89.22 / 80.26 / 77.93 | 65.11 / 56.62 / 49.65 | 90.57 / 71.79 / 67.27 | 69.56 |
+| Part-A²-Anchor | 80 | 91.61 / 82.34 / 81.68 | 65.48 / 59.14 / 53.99 | 91.10 / 72.91 / 68.71 | 71.46 |
+| PV-RCNN | 80 | 91.59 / 84.20 / 82.14 | 64.97 / 57.95 / 52.81 | 89.66 / 70.84 / 66.84 | 71.00 |
+
+The CT3D baseline and its three component variants were trained for 100 epochs
+in FP32 on four NVIDIA A10 GPUs with one frame per GPU. The 69.91% baseline
+is from this run. The [CT3D reference configuration](../cfgs/kitti_models/kitti_ct3d.yaml)
+uses a separate 200-epoch schedule.
+
 ## Configurations
 
 All eight entries are standalone YAMLs. Training layouts below give GPU count
